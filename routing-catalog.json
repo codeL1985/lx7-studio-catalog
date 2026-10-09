@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0.0",
-  "revision": "2026-10-04",
+  "revision": "2026-10-09",
   "generatedBy": "deep-research-pass-1 (13 finder tracks + per-track adversarial verifier + completeness critic; run wf_b143dab6-475)",
   "reviewBy": "2026-11-01",
   "stalenessPolicy": { "maxRowAgeDays": 60, "note": "Model lineups churned ~monthly during research; every row carries asOf. Treat any row older than maxRowAgeDays as stale and re-verify before acting on it." },
@@ -8,15 +8,15 @@
     "purpose": "Routing policy data for Lx7.Studio. The engine routes on it (src-tauri/src/routing_catalog.rs): agents[] is the engine roster, recommendations[] decides who does each task type on this machine, taxonomy[] lists the 51 kinds of work the routing record shows. Confidences are 0-1 and come from the adversarial-verifier pass (text rows) or the owner's media database (media rows), not the finder's optimism.",
     "effortTierMapping": {
       "note": "Cockpit tiers -> vendor effort controls. Vendor defaults DIFFER: Anthropic/Google/xAI default high; OpenAI defaults medium. The 'medium is the universal sweet spot' folk rule was REFUTED against vendor docs (adjusted confidence 0.30).",
-      "anthropic": { "control": "output_config.effort", "values": ["low", "medium", "high", "xhigh", "max"], "default": "high", "cockpitMap": { "minimal": "low", "low": "low", "medium": "medium", "high": "high", "maximum": "xhigh" }, "warning": "'max' reserved for frontier problems; vendor docs warn it can cause overthinking on structured tasks. Verified 2026-09-01 (confidence 0.72)." },
-      "openai": { "control": "reasoning_effort", "values": ["none", "low", "medium", "high", "xhigh", "max"], "default": "medium", "cockpitMap": { "minimal": "none", "low": "low", "medium": "medium", "high": "high", "maximum": "xhigh" }, "warning": "'minimal' no longer exists on GPT-5.6 (enum is none..max). One dated report of ~35% request failures at xhigh on GPT-5.2 after very long inference — unverified on 5.6. Confidence 0.50." },
+      "anthropic": { "control": "output_config.effort", "values": ["low", "medium", "high", "xhigh", "max"], "default": "high", "cockpitMap": { "minimal": "low", "low": "low", "medium": "medium", "high": "high", "maximum": "max" }, "warning": "'max' reserved for frontier problems; vendor docs warn it can cause overthinking on structured tasks. Verified 2026-09-01 (confidence 0.72)." },
+      "openai": { "control": "reasoning_effort", "values": ["none", "low", "medium", "high", "xhigh", "max"], "default": "medium", "cockpitMap": { "minimal": "low", "low": "low", "medium": "medium", "high": "high", "maximum": "max" }, "warning": "The Codex CLI takes low..max (`codex debug models`, 2026-10-09); 'none' is API-only, so minimal is sent as low. One dated report of ~35% request failures at xhigh on GPT-5.2 after very long inference — unverified on 5.6. Confidence 0.50." },
       "google": { "control": "thinking_level", "values": ["low", "medium", "high"], "default": "high", "cockpitMap": { "minimal": "low", "low": "low", "medium": "medium", "high": "high", "maximum": "high" }, "warning": "Verified on gemini-3.1-pro-preview only (medium tier added in 3.1). Flash-Lite line defaults thinking OFF. The 3.5/3.7 Flash effort mapping was NOT verified — gap. Confidence 0.38." },
       "xai": { "control": "reasoning_effort", "values": ["low", "medium", "high", "xhigh"], "default": "high", "cockpitMap": { "minimal": "low", "low": "low", "medium": "medium", "high": "high", "maximum": "xhigh" }, "warning": "xhigh exists on grok-4.6+ only; earlier models silently downgrade it to high. Verified against docs.x.ai 2026-09-01 (confidence 0.60)." },
       "imageVideoModels": { "note": "Image/video models expose NO reasoning-effort dial. effortTier on those recommendations is a placeholder 'medium' and MUST be treated as n/a by any consumer — encoding this explicitly per completeness-critic finding." }
     },
     "crossCuttingFindings": ["CONFIRMED (0.70): one-shot UI generation rewards top effort — max/high/xhigh variants dominate the WebDev Arena top ranks on fresh Aug-30-2026 primary data.", "CONFIRMED-directional: effort should scale with task AMBIGUITY, not task category alone — known-root-cause debugging = medium; unclear root cause = high/maximum.", "Claude Opus 5 over-scopes at max effort (vendor-acknowledged): default it to high for architecture/scoped work, reserve max for one-shot UI/frontier problems.", "Anthropic ships no image/video generation model — encoded as absent, not unscored.", "Sora 2 API sunsets 2026-09-24; OpenAI has no video routing target after that date."],
     "mediaDatabase": { "source": "owner's Higgsfield model database (elite-visual-director references/model-picker.json)", "version": 1, "verifiedOn": "2026-08-20", "models": 97, "sources": 404, "rule": "The media database wins where it disagrees with this catalog (owner decision 2026-10-03). Its picks are rank 1 on every media row; the catalog's own research stays below them as evidence.", "confidenceMap": { "note": "Database words -> 0-1. rated = in its best-choices table; unranked = candidate only.", "rated:HIGH": 0.6, "rated:MEDIUM": 0.45, "rated:LOW": 0.3, "unranked:HIGH": 0.4, "unranked:MEDIUM": 0.35, "unranked:LOW": 0.2 } },
-    "lastResearch": null
+    "lastResearch": { "day": "2026-10-09", "provider": "claude", "accepted": 15, "skipped": [] }
   },
   "agents": [
     {
@@ -28,7 +28,41 @@
         { "id": "claude-fable-5", "label": "Claude Fable 5", "strength": 5, "cost": 5, "latency": 3, "contextWindow": 1000000, "modalities": ["text", "vision"], "available": true, "capabilities": ["coding", "debugging", "architecture", "research", "general"], "meta": { "checkedOn": "2026-09-01", "status": "current", "notes": "Hardest-escalation tier; community reserves it for work that justifies the bill. Multi-day autonomous sessions." } },
         { "id": "claude-opus-5", "label": "Claude Opus 5", "strength": 5, "cost": 3, "latency": 2, "contextWindow": 1000000, "modalities": ["text", "vision"], "available": true, "capabilities": ["coding", "debugging", "architecture", "research", "design-review", "general"], "meta": { "checkedOn": "2026-09-01", "releasedOn": "2026-07-24", "status": "current", "supersedes": "claude-opus-4-8", "notes": "Agentic flagship; adjustable effort; over-scopes at max on scoped work (vendor-acknowledged)." } },
         { "id": "claude-sonnet-5", "label": "Claude Sonnet 5", "strength": 4, "cost": 2, "latency": 1, "contextWindow": 200000, "modalities": ["text", "vision"], "available": true, "capabilities": ["coding", "testing", "design-review", "research", "general"], "meta": { "checkedOn": "2026-09-01", "status": "current", "notes": "Default model in Claude Code; the 'first pass / execution' model." } },
-        { "id": "claude-haiku-4-5", "label": "Claude Haiku 4.5", "strength": 2, "cost": 1, "latency": 1, "contextWindow": 200000, "modalities": ["text", "vision"], "available": true, "capabilities": ["general", "testing"], "meta": { "checkedOn": "2026-09-01", "status": "current", "notes": "Priced 3-20x above competing nano/flash-lite tiers; wins instruction-following per community, loses raw cost." } }
+        { "id": "claude-haiku-4-5", "label": "Claude Haiku 4.5", "takesEffort": false, "strength": 2, "cost": 1, "latency": 1, "contextWindow": 200000, "modalities": ["text", "vision"], "available": true, "capabilities": ["general", "testing"], "meta": { "checkedOn": "2026-09-01", "status": "current", "notes": "Priced 3-20x above competing nano/flash-lite tiers; wins instruction-following per community, loses raw cost." } },
+        {
+          "id": "claude-opus-5-5",
+          "label": "Claude Opus 5.5",
+          "available": false,
+          "meta": { "source": "https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md", "checkedOn": "2026-10-09", "status": "not-runnable-here", "notes": "Listed, not routed: the installed CLI cannot run it (probe 2026-10-09).", "addedIn": "claude-code 2.1.280", "waitingFor": "a Claude Code that recognizes it: 2.1.257 answers unrecognized_model. The changelog adds it in 2.1.280; whether an earlier release runs it is unproven (Sonnet 5.5, added in 2.1.284, runs on 2.1.257).", "evidence": ["s15-probe-not-runnable"], "pricingEvidence": ["s15-claude-models-overview"] },
+          "cost": 3,
+          "latency": 2,
+          "contextWindow": 1000000,
+          "modalities": ["text", "vision"]
+        },
+        {
+          "id": "claude-sonnet-5-5",
+          "label": "Claude Sonnet 5.5",
+          "strength": 5,
+          "capabilities": ["coding", "testing", "design-review", "research", "general"],
+          "available": true,
+          "meta": { "asOf": "2026-10-09", "confidence": 0.65, "evidence": ["r2026-10-09-vals-index", "r2026-10-09-benchlm-coding"], "pricingEvidence": ["s15-claude-models-overview"] },
+          "cost": 2,
+          "latency": 1,
+          "contextWindow": 1000000,
+          "modalities": ["text", "vision"]
+        },
+        {
+          "id": "claude-fable-5-1",
+          "label": "Claude Fable 5.1",
+          "strength": 5,
+          "capabilities": ["coding", "debugging", "architecture", "research", "general"],
+          "available": true,
+          "meta": { "asOf": "2026-10-09", "confidence": 0.65, "evidence": ["r2026-10-09-vals-index", "r2026-10-09-benchlm-coding"], "pricingEvidence": ["s15-claude-models-overview"] },
+          "cost": 5,
+          "latency": 3,
+          "contextWindow": 1000000,
+          "modalities": ["text", "vision"]
+        }
       ]
     },
     {
@@ -40,7 +74,37 @@
         { "id": "gpt-5.6-sol", "label": "GPT-5.6 Sol", "strength": 5, "cost": 3, "latency": 2, "contextWindow": 400000, "modalities": ["text", "vision"], "available": true, "capabilities": ["coding", "debugging", "architecture", "research", "general"], "meta": { "checkedOn": "2026-09-01", "releasedOn": "2026-07-09", "status": "current", "supersedes": "gpt-5.5", "notes": "Flagship; tops/near-tops Terminal-Bench 2.1 via Codex CLI." } },
         { "id": "gpt-5.6-terra", "label": "GPT-5.6 Terra", "strength": 4, "cost": 2, "latency": 1, "contextWindow": 400000, "modalities": ["text", "vision"], "available": true, "capabilities": ["coding", "general"], "meta": { "checkedOn": "2026-09-01", "status": "current", "notes": "Balanced tier; routine edits in Codex since 2026-08-31." } },
         { "id": "gpt-5.6-luna", "label": "GPT-5.6 Luna", "strength": 3, "cost": 1, "latency": 1, "contextWindow": 400000, "modalities": ["text", "vision"], "available": true, "capabilities": ["coding", "general"], "meta": { "checkedOn": "2026-09-01", "status": "current", "notes": "Cost-efficient tier; nano lineage (gpt-5-nano deprecated)." } },
-        { "id": "gpt-image-2", "label": "GPT Image 2", "strength": 5, "cost": 3, "latency": 3, "contextWindow": 32000, "modalities": ["text", "image"], "available": true, "capabilities": ["image-generation"], "meta": { "checkedOn": "2026-09-01", "releasedOn": "2026-04-21", "status": "current", "notes": "#1 on both AA and arena.ai text-to-image and image-edit boards (75k-212k votes); ~98.5-99% verbatim text-in-image accuracy." } }
+        { "id": "gpt-image-2", "label": "GPT Image 2", "strength": 5, "cost": 3, "latency": 3, "contextWindow": 32000, "modalities": ["text", "image"], "available": true, "capabilities": ["image-generation"], "meta": { "checkedOn": "2026-09-01", "releasedOn": "2026-04-21", "status": "current", "notes": "#1 on both AA and arena.ai text-to-image and image-edit boards (75k-212k votes); ~98.5-99% verbatim text-in-image accuracy." } },
+        {
+          "id": "gpt-6-sol",
+          "label": "GPT-6 Sol",
+          "available": false,
+          "meta": { "addedIn": "codex 0.157.0", "waitingFor": "Codex with a ChatGPT account: the server answers 400 \"not supported when using Codex with a ChatGPT account\" (Codex 0.153.4 also lacks its model metadata).", "source": "https://github.com/openai/codex/releases/tag/rust-v0.157.0", "evidence": ["s15-probe-not-runnable"], "checkedOn": "2026-10-09", "status": "not-runnable-here", "notes": "Listed, not routed: the installed CLI cannot run it (probe 2026-10-09)." }
+        },
+        {
+          "id": "gpt-6.1-sol",
+          "label": "GPT-6.1 Sol",
+          "available": false,
+          "meta": { "source": "https://github.com/openai/codex/releases/tag/rust-v0.161.0", "checkedOn": "2026-10-09", "status": "not-runnable-here", "notes": "Listed, not routed: the installed CLI cannot run it (probe 2026-10-09).", "addedIn": "codex 0.161.0", "waitingFor": "Codex with a ChatGPT account: the server answers 400 \"not supported when using Codex with a ChatGPT account\" (Codex 0.153.4 also lacks its model metadata).", "evidence": ["s15-probe-not-runnable"] }
+        },
+        {
+          "id": "gpt-6-luna",
+          "label": "GPT-6 Luna",
+          "available": false,
+          "meta": { "source": "https://github.com/openai/codex/releases/tag/rust-v0.157.0", "checkedOn": "2026-10-09", "status": "not-runnable-here", "notes": "Listed, not routed: the installed CLI cannot run it (probe 2026-10-09).", "addedIn": "codex 0.157.0", "waitingFor": "Codex with a ChatGPT account: the server answers 400 \"not supported when using Codex with a ChatGPT account\" (Codex 0.153.4 also lacks its model metadata).", "evidence": ["s15-probe-not-runnable"] }
+        },
+        {
+          "id": "gpt-6-astra",
+          "label": "GPT-6 Astra",
+          "strength": 5,
+          "capabilities": ["coding", "debugging", "architecture", "research", "general"],
+          "available": true,
+          "meta": { "asOf": "2026-10-09", "confidence": 0.65, "evidence": ["r2026-10-09-vals-index", "r2026-10-09-benchlm-coding"], "pricingEvidence": ["s15-openai-gpt-6-astra"] },
+          "cost": 5,
+          "latency": 2,
+          "contextWindow": 1050000,
+          "modalities": ["text", "vision"]
+        }
       ]
     },
     {
@@ -49,13 +113,23 @@
       "available": false,
       "meta": { "provider": "google", "executable": false, "status": "target", "notes": "TARGET policy only — the cockpit's store restricts execution to claude|codex today. Rows recorded for the future adapter." },
       "models": [
-        { "id": "gemini-3.1-pro", "label": "Gemini 3.1 Pro", "strength": 5, "cost": 2, "latency": 2, "contextWindow": 1000000, "modalities": ["text", "vision"], "available": false, "capabilities": ["research", "coding", "architecture", "general"], "meta": { "checkedOn": "2026-09-01", "status": "current-preview", "notes": "Still preview-tagged; broadest multilingual coverage; Deep Think for hard math." } },
-        { "id": "gemini-3.7-flash", "label": "Gemini 3.7 Flash", "strength": 4, "cost": 1, "latency": 1, "contextWindow": 1000000, "modalities": ["text", "vision"], "available": false, "capabilities": ["coding", "research", "general"], "meta": { "checkedOn": "2026-09-01", "status": "current", "notes": "Current Flash; leads AA-AnalystAgent (60.0% pass^5 at high) — gap vs Opus 5 statistically null per verifier." } },
-        { "id": "gemini-3.5-flash-lite", "label": "Gemini 3.5 Flash-Lite", "strength": 2, "cost": 1, "latency": 1, "contextWindow": 1000000, "modalities": ["text", "vision"], "available": false, "capabilities": ["general"], "meta": { "checkedOn": "2026-09-01", "status": "current", "notes": "Cheapest current bulk tier ($0.30/$2.50 per 1M); 2.5 Flash-Lite ($0.10/$0.40, 0.29s TTFT measured) sunsets Oct 2026." } },
-        { "id": "nano-banana-pro", "label": "Nano Banana Pro", "strength": 4, "cost": 2, "latency": 2, "contextWindow": 32000, "modalities": ["text", "image"], "available": false, "capabilities": ["image-generation"], "meta": { "checkedOn": "2026-09-01", "aka": "gemini-3-pro-image", "status": "current", "notes": "Best multi-reference character consistency (up to 5 characters + 6 objects)." } },
-        { "id": "nano-banana-2", "label": "Nano Banana 2", "strength": 4, "cost": 1, "latency": 1, "contextWindow": 32000, "modalities": ["text", "image"], "available": false, "capabilities": ["image-generation"], "meta": { "checkedOn": "2026-09-01", "aka": "gemini-3.1-flash-image", "releasedOn": "2026-02-26", "status": "current", "notes": "Outranks Pro on general image boards; best skin/material photorealism per independent tested ranking." } },
-        { "id": "veo-3.1", "label": "Veo 3.1", "strength": 5, "cost": 4, "latency": 4, "contextWindow": 32000, "modalities": ["text", "image", "video"], "available": false, "capabilities": ["video-generation"], "meta": { "checkedOn": "2026-09-01", "status": "current", "notes": "Cinematic/production tier: up to 4K, 140+s, native 48kHz audio." } },
-        { "id": "gemini-omni-flash", "label": "Gemini Omni Flash", "strength": 4, "cost": 2, "latency": 1, "contextWindow": 32000, "modalities": ["text", "image", "video"], "available": false, "capabilities": ["video-generation"], "meta": { "checkedOn": "2026-09-01", "status": "current", "notes": "Fast conversational video gen/edit, $0.10/s; #1 scoped-provider entry on AA i2v-with-audio board (1179 Elo)." } }
+        { "id": "gemini-3.1-pro-preview", "label": "Gemini 3.1 Pro", "strength": 5, "cost": 2, "latency": 2, "contextWindow": 1000000, "modalities": ["text", "vision"], "available": false, "capabilities": ["research", "coding", "architecture", "general"], "meta": { "checkedOn": "2026-10-09", "status": "current-preview", "notes": "Still preview-tagged; broadest multilingual coverage; Deep Think for hard math.", "formerId": "gemini-3.1-pro", "source": "https://ai.google.dev/gemini-api/docs/deprecations" } },
+        { "id": "gemini-3.7-flash", "label": "Gemini 3.7 Flash", "strength": 4, "cost": 1, "latency": 1, "contextWindow": 1000000, "modalities": ["text", "vision"], "available": false, "capabilities": ["coding", "research", "general"], "meta": { "checkedOn": "2026-10-09", "status": "current", "notes": "Current Flash; leads AA-AnalystAgent (60.0% pass^5 at high) — gap vs Opus 5 statistically null per verifier.", "source": "https://ai.google.dev/gemini-api/docs/deprecations" } },
+        { "id": "gemini-3.5-flash-lite", "label": "Gemini 3.5 Flash-Lite", "strength": 2, "cost": 1, "latency": 1, "contextWindow": 1000000, "modalities": ["text", "vision"], "available": false, "capabilities": ["general"], "meta": { "checkedOn": "2026-10-09", "status": "current", "notes": "Cheapest current bulk tier ($0.30/$2.50 per 1M); 2.5 Flash-Lite ($0.10/$0.40, 0.29s TTFT measured) sunsets Oct 2026.", "source": "https://ai.google.dev/gemini-api/docs/deprecations" } },
+        { "id": "gemini-3-pro-image", "label": "Nano Banana Pro", "strength": 4, "cost": 2, "latency": 2, "contextWindow": 32000, "modalities": ["text", "image"], "available": false, "capabilities": ["image-generation"], "meta": { "checkedOn": "2026-10-09", "status": "current", "notes": "Best multi-reference character consistency (up to 5 characters + 6 objects).", "formerId": "nano-banana-pro", "source": "https://ai.google.dev/gemini-api/docs/deprecations" } },
+        { "id": "gemini-3.1-flash-image", "label": "Nano Banana 2", "strength": 4, "cost": 1, "latency": 1, "contextWindow": 32000, "modalities": ["text", "image"], "available": false, "capabilities": ["image-generation"], "meta": { "checkedOn": "2026-10-09", "releasedOn": "2026-02-26", "status": "current", "notes": "Outranks Pro on general image boards; best skin/material photorealism per independent tested ranking.", "formerId": "nano-banana-2", "source": "https://ai.google.dev/gemini-api/docs/deprecations" } },
+        {
+          "id": "gemini-omni-1.1-flash",
+          "label": "Gemini Omni 1.1 Flash",
+          "strength": 4,
+          "cost": 2,
+          "latency": 1,
+          "contextWindow": 32000,
+          "modalities": ["text", "image", "video"],
+          "available": false,
+          "capabilities": ["video-generation"],
+          "meta": { "checkedOn": "2026-10-09", "status": "current", "formerId": ["veo-3.1-generate-preview", "veo-3.1", "gemini-omni-flash-preview", "gemini-omni-flash"], "source": "https://ai.google.dev/gemini-api/docs/deprecations", "evidence": ["s15-google-omni-1-1-flash"], "notes": "Google's named replacement for Veo 3.1 and Gemini Omni Flash preview (both shut down 2026-10-22). Strength, cost and latency are carried from Gemini Omni Flash, not yet researched." }
+        }
       ]
     },
     {
@@ -64,9 +138,9 @@
       "available": false,
       "meta": { "provider": "xai", "executable": false, "status": "target", "notes": "TARGET policy only. Grok coverage is the thinnest of the four across text tasks (critic finding) — most rows are placement-by-absence, not measured losses." },
       "models": [
-        { "id": "grok-4.6", "label": "Grok 4.6", "strength": 5, "cost": 2, "latency": 2, "contextWindow": 500000, "modalities": ["text", "vision"], "available": false, "capabilities": ["coding", "debugging", "general"], "meta": { "checkedOn": "2026-09-01", "releasedOn": "2026-08-12", "status": "current", "supersedes": "grok-4.5", "notes": "Strong Terminal-Bench (~88.4%) and tau^3-Banking; marketed for long-running agents; little independent long-session community corroboration yet." } },
-        { "id": "grok-imagine-2.0", "label": "Grok Imagine 2.0", "strength": 4, "cost": 1, "latency": 1, "contextWindow": 32000, "modalities": ["text", "image"], "available": false, "capabilities": ["image-generation"], "meta": { "checkedOn": "2026-09-01", "aka": "aurora-2", "releasedOn": "2026-08-07", "status": "current", "notes": "#2 on LMArena t2i/image-edit at launch; native 4MP; wide confidence interval (few votes)." } },
-        { "id": "grok-imagine-video-1.5", "label": "Grok Imagine Video 1.5", "strength": 4, "cost": 1, "latency": 1, "contextWindow": 32000, "modalities": ["text", "image", "video"], "available": false, "capabilities": ["video-generation"], "meta": { "checkedOn": "2026-09-01", "status": "current", "notes": "Cheap/fast i2v with synced audio; 720p/~10s caps; arena position vs Omni Flash contested (verifier found the two snapshots inconsistent)." } }
+        { "id": "grok-4.6", "label": "Grok 4.6", "strength": 5, "cost": 2, "latency": 2, "contextWindow": 500000, "modalities": ["text", "vision"], "available": false, "capabilities": ["coding", "debugging", "general"], "meta": { "checkedOn": "2026-10-09", "releasedOn": "2026-08-12", "status": "current", "supersedes": "grok-4.5", "notes": "Strong Terminal-Bench (~88.4%) and tau^3-Banking; marketed for long-running agents; little independent long-session community corroboration yet.", "source": "https://docs.x.ai/docs/models" } },
+        { "id": "grok-imagine-image-2.0", "label": "Grok Imagine 2.0", "strength": 4, "cost": 1, "latency": 1, "contextWindow": 32000, "modalities": ["text", "image"], "available": false, "capabilities": ["image-generation"], "meta": { "checkedOn": "2026-10-09", "releasedOn": "2026-08-07", "status": "current", "notes": "#2 on LMArena t2i/image-edit at launch; native 4MP; wide confidence interval (few votes).", "formerId": "grok-imagine-2.0", "source": "https://docs.x.ai/docs/models" } },
+        { "id": "grok-imagine-video-1.5", "label": "Grok Imagine Video 1.5", "strength": 4, "cost": 1, "latency": 1, "contextWindow": 32000, "modalities": ["text", "image", "video"], "available": false, "capabilities": ["video-generation"], "meta": { "checkedOn": "2026-10-09", "status": "current", "notes": "Cheap/fast i2v with synced audio; 720p/~10s caps; arena position vs Omni Flash contested (verifier found the two snapshots inconsistent).", "source": "https://docs.x.ai/docs/models" } }
       ]
     },
     {
@@ -75,24 +149,24 @@
       "available": false,
       "meta": { "provider": "higgsfield", "executable": false, "status": "target", "notes": "Media picks from the owner's Higgsfield model database (elite-visual-director), which wins over this catalog's own media research (owner decision 2026-10-03). Higgsfield is an MCP connector in the app; the router never dispatches these models." },
       "models": [
-        { "id": "nano-banana-pro", "label": "Gemini 3 Pro Image", "strength": 5, "available": false, "capabilities": ["image-generation"], "modalities": ["text", "image"], "meta": { "checkedOn": "2026-08-20", "jobType": "nano_banana_pro", "rating": "LEADING", "databaseConfidence": "HIGH", "bestUse": "Photoreal human drama and character / face consistency" } },
-        { "id": "flux-2", "label": "FLUX.2", "strength": 5, "available": false, "capabilities": ["image-generation"], "modalities": ["text", "image"], "meta": { "checkedOn": "2026-08-20", "jobType": "flux_2", "rating": "EXCELLENT", "databaseConfidence": "MEDIUM", "bestUse": "Text-in-image and typography" } },
-        { "id": "kling-omni-image", "label": "Kling O1 Image", "strength": 5, "available": false, "capabilities": ["image-generation"], "modalities": ["text", "image"], "meta": { "checkedOn": "2026-08-20", "jobType": "kling_omni_image", "rating": "LEADING", "databaseConfidence": "MEDIUM", "bestUse": "Character-consistent stills from up to 10 references" } },
-        { "id": "nano-banana-flash", "label": "Gemini 3.1 Flash Image", "strength": 5, "available": false, "capabilities": ["image-generation"], "modalities": ["text", "image"], "meta": { "checkedOn": "2026-08-20", "jobType": "nano_banana_flash", "rating": "EXCELLENT", "databaseConfidence": "HIGH", "bestUse": "Stylized and anime stills" } },
-        { "id": "flux-kontext", "label": "FLUX.1 Kontext Pro", "strength": 3, "available": false, "capabilities": ["image-generation"], "modalities": ["text", "image"], "meta": { "checkedOn": "2026-08-20", "jobType": "flux_kontext", "rating": "unranked", "databaseConfidence": "MEDIUM", "bestUse": "Character-consistent multi-turn image editing" } },
-        { "id": "recraft-v4-1", "label": "Recraft V4.1", "strength": 5, "available": false, "capabilities": ["image-generation"], "modalities": ["text", "image"], "meta": { "checkedOn": "2026-08-20", "jobType": "recraft_v4_1", "rating": "LEADING", "databaseConfidence": "HIGH", "bestUse": "Logos, icon sets and brand marks as editable SVG" } },
-        { "id": "kling3-0", "label": "Kling 3.0", "strength": 5, "available": false, "capabilities": ["video-generation"], "modalities": ["text", "image", "video"], "meta": { "checkedOn": "2026-08-20", "jobType": "kling3_0", "rating": "EXCELLENT", "databaseConfidence": "MEDIUM", "bestUse": "Action, camera control and dynamic motion" } },
-        { "id": "seedance-2-0", "label": "Seedance 2.0", "strength": 5, "available": false, "capabilities": ["video-generation"], "modalities": ["text", "image", "video"], "meta": { "checkedOn": "2026-08-20", "jobType": "seedance_2_0", "rating": "EXCELLENT", "databaseConfidence": "MEDIUM", "bestUse": "Multi-shot storytelling and environments" } },
-        { "id": "gemini-omni", "label": "Gemini Omni", "strength": 3, "available": false, "capabilities": ["video-generation"], "modalities": ["text", "image", "video"], "meta": { "checkedOn": "2026-08-20", "jobType": "gemini_omni", "rating": "unranked", "databaseConfidence": "MEDIUM", "bestUse": "Fast multi-shot iteration and pre-viz passes" } },
-        { "id": "happy-horse-video", "label": "Happy Horse 1.0", "strength": 5, "available": false, "capabilities": ["video-generation"], "modalities": ["text", "image", "video"], "meta": { "checkedOn": "2026-08-20", "jobType": "happy_horse_video", "rating": "LEADING", "databaseConfidence": "MEDIUM", "bestUse": "Native dialogue and lip sync" } },
-        { "id": "cinematic-studio-video-3-5", "label": "Cinema Studio Video 3.5", "strength": 4, "available": false, "capabilities": ["video-generation"], "modalities": ["text", "image", "video"], "meta": { "checkedOn": "2026-08-20", "jobType": "cinematic_studio_video_3_5", "rating": "GOOD", "databaseConfidence": "MEDIUM", "bestUse": "Product and commercial video" } },
-        { "id": "text2speech-v2", "label": "Text to Speech V2", "strength": 3, "available": false, "capabilities": ["audio-generation"], "modalities": ["text", "audio"], "meta": { "checkedOn": "2026-08-20", "jobType": "text2speech_v2", "rating": "unranked", "databaseConfidence": "MEDIUM", "bestUse": "Narration and directed voiceover (five-engine router)" } },
-        { "id": "sonilo-music", "label": "Sonilo Music", "strength": 3, "available": false, "capabilities": ["audio-generation"], "modalities": ["text", "audio"], "meta": { "checkedOn": "2026-08-20", "jobType": "sonilo_music", "rating": "unranked", "databaseConfidence": "LOW", "bestUse": "Instrumental beds, jingles and backing tracks" } },
-        { "id": "mirelo-text-to-audio", "label": "Mirelo SFX", "strength": 3, "available": false, "capabilities": ["audio-generation"], "modalities": ["text", "audio"], "meta": { "checkedOn": "2026-08-20", "jobType": "mirelo_text_to_audio", "rating": "unranked", "databaseConfidence": "LOW", "bestUse": "Sound effects, ambience and foley" } },
-        { "id": "seed-audio", "label": "Seed Audio 1.0", "strength": 3, "available": false, "capabilities": ["audio-generation"], "modalities": ["text", "audio"], "meta": { "checkedOn": "2026-08-20", "jobType": "seed_audio", "rating": "unranked", "databaseConfidence": "MEDIUM", "bestUse": "One-shot scene audio: dialogue, ambience, music and effects together" } },
-        { "id": "meshy-v6-text-to-3d", "label": "Meshy 6", "strength": 5, "available": false, "capabilities": ["3d-generation"], "modalities": ["text", "image", "3d"], "meta": { "checkedOn": "2026-08-20", "jobType": "meshy_v6_text_to_3d", "rating": "EXCELLENT", "databaseConfidence": "MEDIUM", "bestUse": "Rigged, game-ready 3D assets" } },
-        { "id": "bytedance-image-upscale", "label": "ByteDance Image Upscale", "strength": 3, "available": false, "capabilities": ["image-generation"], "modalities": ["text", "image"], "meta": { "checkedOn": "2026-08-20", "jobType": "bytedance_image_upscale", "rating": "unranked", "databaseConfidence": "LOW", "bestUse": "Quick 2K / 4K image upscale" } },
-        { "id": "bytedance-video-upscale", "label": "ByteDance Video Upscale", "strength": 3, "available": false, "capabilities": ["video-generation"], "modalities": ["text", "image", "video"], "meta": { "checkedOn": "2026-08-20", "jobType": "bytedance_video_upscale", "rating": "unranked", "databaseConfidence": "MEDIUM", "bestUse": "Batch video upscale to 1080p / 2K / 4K" } }
+        { "id": "nano_banana_pro", "label": "Gemini 3 Pro Image", "strength": 5, "available": false, "capabilities": ["image-generation"], "modalities": ["text", "image"], "meta": { "checkedOn": "2026-08-20", "jobType": "nano_banana_pro", "rating": "LEADING", "databaseConfidence": "HIGH", "bestUse": "Photoreal human drama and character / face consistency" } },
+        { "id": "flux_2", "label": "FLUX.2", "strength": 5, "available": false, "capabilities": ["image-generation"], "modalities": ["text", "image"], "meta": { "checkedOn": "2026-08-20", "jobType": "flux_2", "rating": "EXCELLENT", "databaseConfidence": "MEDIUM", "bestUse": "Text-in-image and typography" } },
+        { "id": "kling_omni_image", "label": "Kling O1 Image", "strength": 5, "available": false, "capabilities": ["image-generation"], "modalities": ["text", "image"], "meta": { "checkedOn": "2026-08-20", "jobType": "kling_omni_image", "rating": "LEADING", "databaseConfidence": "MEDIUM", "bestUse": "Character-consistent stills from up to 10 references" } },
+        { "id": "nano_banana_flash", "label": "Gemini 3.1 Flash Image", "strength": 5, "available": false, "capabilities": ["image-generation"], "modalities": ["text", "image"], "meta": { "checkedOn": "2026-08-20", "jobType": "nano_banana_flash", "rating": "EXCELLENT", "databaseConfidence": "HIGH", "bestUse": "Stylized and anime stills" } },
+        { "id": "flux_kontext", "label": "FLUX.1 Kontext Pro", "strength": 3, "available": false, "capabilities": ["image-generation"], "modalities": ["text", "image"], "meta": { "checkedOn": "2026-08-20", "jobType": "flux_kontext", "rating": "unranked", "databaseConfidence": "MEDIUM", "bestUse": "Character-consistent multi-turn image editing" } },
+        { "id": "recraft_v4_1", "label": "Recraft V4.1", "strength": 5, "available": false, "capabilities": ["image-generation"], "modalities": ["text", "image"], "meta": { "checkedOn": "2026-08-20", "jobType": "recraft_v4_1", "rating": "LEADING", "databaseConfidence": "HIGH", "bestUse": "Logos, icon sets and brand marks as editable SVG" } },
+        { "id": "kling3_0", "label": "Kling 3.0", "strength": 5, "available": false, "capabilities": ["video-generation"], "modalities": ["text", "image", "video"], "meta": { "checkedOn": "2026-08-20", "jobType": "kling3_0", "rating": "EXCELLENT", "databaseConfidence": "MEDIUM", "bestUse": "Action, camera control and dynamic motion" } },
+        { "id": "seedance_2_0", "label": "Seedance 2.0", "strength": 5, "available": false, "capabilities": ["video-generation"], "modalities": ["text", "image", "video"], "meta": { "checkedOn": "2026-08-20", "jobType": "seedance_2_0", "rating": "EXCELLENT", "databaseConfidence": "MEDIUM", "bestUse": "Multi-shot storytelling and environments" } },
+        { "id": "gemini_omni", "label": "Gemini Omni", "strength": 3, "available": false, "capabilities": ["video-generation"], "modalities": ["text", "image", "video"], "meta": { "checkedOn": "2026-08-20", "jobType": "gemini_omni", "rating": "unranked", "databaseConfidence": "MEDIUM", "bestUse": "Fast multi-shot iteration and pre-viz passes" } },
+        { "id": "happy_horse_video", "label": "Happy Horse 1.0", "strength": 5, "available": false, "capabilities": ["video-generation"], "modalities": ["text", "image", "video"], "meta": { "checkedOn": "2026-08-20", "jobType": "happy_horse_video", "rating": "LEADING", "databaseConfidence": "MEDIUM", "bestUse": "Native dialogue and lip sync" } },
+        { "id": "cinematic_studio_video_3_5", "label": "Cinema Studio Video 3.5", "strength": 4, "available": false, "capabilities": ["video-generation"], "modalities": ["text", "image", "video"], "meta": { "checkedOn": "2026-08-20", "jobType": "cinematic_studio_video_3_5", "rating": "GOOD", "databaseConfidence": "MEDIUM", "bestUse": "Product and commercial video" } },
+        { "id": "text2speech_v2", "label": "Text to Speech V2", "strength": 3, "available": false, "capabilities": ["audio-generation"], "modalities": ["text", "audio"], "meta": { "checkedOn": "2026-08-20", "jobType": "text2speech_v2", "rating": "unranked", "databaseConfidence": "MEDIUM", "bestUse": "Narration and directed voiceover (five-engine router)" } },
+        { "id": "sonilo_music", "label": "Sonilo Music", "strength": 3, "available": false, "capabilities": ["audio-generation"], "modalities": ["text", "audio"], "meta": { "checkedOn": "2026-08-20", "jobType": "sonilo_music", "rating": "unranked", "databaseConfidence": "LOW", "bestUse": "Instrumental beds, jingles and backing tracks" } },
+        { "id": "mirelo_text_to_audio", "label": "Mirelo SFX", "strength": 3, "available": false, "capabilities": ["audio-generation"], "modalities": ["text", "audio"], "meta": { "checkedOn": "2026-08-20", "jobType": "mirelo_text_to_audio", "rating": "unranked", "databaseConfidence": "LOW", "bestUse": "Sound effects, ambience and foley" } },
+        { "id": "seed_audio", "label": "Seed Audio 1.0", "strength": 3, "available": false, "capabilities": ["audio-generation"], "modalities": ["text", "audio"], "meta": { "checkedOn": "2026-08-20", "jobType": "seed_audio", "rating": "unranked", "databaseConfidence": "MEDIUM", "bestUse": "One-shot scene audio: dialogue, ambience, music and effects together" } },
+        { "id": "meshy_v6_text_to_3d", "label": "Meshy 6", "strength": 5, "available": false, "capabilities": ["3d-generation"], "modalities": ["text", "image", "3d"], "meta": { "checkedOn": "2026-08-20", "jobType": "meshy_v6_text_to_3d", "rating": "EXCELLENT", "databaseConfidence": "MEDIUM", "bestUse": "Rigged, game-ready 3D assets" } },
+        { "id": "bytedance_image_upscale", "label": "ByteDance Image Upscale", "strength": 3, "available": false, "capabilities": ["image-generation"], "modalities": ["text", "image"], "meta": { "checkedOn": "2026-08-20", "jobType": "bytedance_image_upscale", "rating": "unranked", "databaseConfidence": "LOW", "bestUse": "Quick 2K / 4K image upscale" } },
+        { "id": "bytedance_video_upscale", "label": "ByteDance Video Upscale", "strength": 3, "available": false, "capabilities": ["video-generation"], "modalities": ["text", "image", "video"], "meta": { "checkedOn": "2026-08-20", "jobType": "bytedance_video_upscale", "rating": "unranked", "databaseConfidence": "MEDIUM", "bestUse": "Batch video upscale to 1080p / 2K / 4K" } }
       ]
     }
   ],
@@ -190,15 +264,18 @@
   "recommendations": [
     {
       "taskType": "long-horizon-coding",
-      "asOf": "2026-09-01",
+      "asOf": "2026-10-09",
       "status": "current",
       "confidence": 0.5,
       "rankedChoices": [
-        { "rank": 1, "provider": "anthropic", "model": "claude-opus-5", "effortTier": "high", "strength": 5, "confidence": 0.5, "evidence": ["code-02", "code-03", "code-06", "code-09"], "notes": "Rank survived adversarial check on fresh AA data. Harness caveat: evidence measures Claude Code (model+harness), not raw API." },
-        { "rank": 2, "provider": "anthropic", "model": "claude-fable-5", "effortTier": "maximum", "strength": 5, "confidence": 0.5, "evidence": ["code-08", "code-10"], "notes": "Escalation tier: multi-day sessions, hardest work that justifies cost. Opus-5-vs-Fable-5 ordering genuinely unresolved in sources." },
-        { "rank": 3, "provider": "openai", "model": "gpt-5.6-sol", "effortTier": "high", "strength": 5, "confidence": 0.5, "evidence": ["code-01", "code-05", "code-07"], "notes": "Codex CLI; tops/near-tops Terminal-Bench 2.1." },
-        { "rank": 4, "provider": "xai", "model": "grok-4.6", "effortTier": "high", "strength": 5, "confidence": 0.35, "evidence": ["code-11"], "notes": "Strong benchmark, thin community corroboration for hours-long sessions." },
-        { "rank": 5, "provider": "google", "model": "gemini-3.1-pro", "effortTier": "high", "strength": 5, "confidence": 0.35, "evidence": ["code-04", "code-12"], "notes": "Best Google option; least evidence of long-session coding use." }
+        { "rank": 1, "provider": "anthropic", "model": "claude-sonnet-5-5", "effortTier": "high", "strength": 5, "confidence": 0.6, "evidence": ["r2026-10-09-vals-tb4", "r2026-10-09-benchlm-tb4", "r2026-10-09-vals-migration", "r2026-10-09-benchlm-coding"], "notes": "Beats Opus 5 on Terminal-Bench 4.0 (64.1 vs 53.5 Vals; 61.8 vs 53.9 BenchLM), Code Migration (69.8 vs 57.5), BenchLM coding (84.2 vs 71.4). TB4 was run at max; high is unmeasured." },
+        { "rank": 2, "provider": "openai", "model": "gpt-6-astra", "effortTier": "high", "strength": 5, "confidence": 0.65, "evidence": ["r2026-10-09-benchlm-tb4", "r2026-10-09-llmlearner-tb4", "r2026-10-09-vals-tb4", "r2026-10-09-vals-ksp", "r2026-10-09-vals-migration"], "notes": "Codex TB4 58.2 at max, 57.9 at high: high is the knee of the effort curve. Beats Opus 5 on Vals TB4 (59.6 vs 53.5), Code Migration and the KSP long-horizon index (90.5 vs 18.8). BenchLM and llmlearner TB4 count as one source." },
+        { "rank": 3, "provider": "anthropic", "model": "claude-fable-5-1", "effortTier": "maximum", "strength": 5, "confidence": 0.55, "evidence": ["r2026-10-09-benchlm-tb4", "r2026-10-09-llmlearner-tb4", "r2026-10-09-vals-programbench", "r2026-10-09-vals-migration"], "notes": "TB4 sweep 43.3 low, 53.9 medium, 54.5 high, 57.9 xhigh/max, so maximum buys +3.3 over high. Beats Opus 5 on TB4 and ProgramBench; loses to it on Code Migration (54.6 vs 57.5). Successor to Fable 5. BenchLM and llmlearner TB4 count as one source (0.60 -> 0.55)." },
+        { "rank": 4, "provider": "anthropic", "model": "claude-opus-5", "effortTier": "high", "strength": 5, "confidence": 0.5, "evidence": ["code-02", "code-03", "code-06", "code-09"], "notes": "Rank survived adversarial check on fresh AA data. Harness caveat: evidence measures Claude Code (model+harness), not raw API." },
+        { "rank": 5, "provider": "anthropic", "model": "claude-fable-5", "effortTier": "maximum", "strength": 5, "confidence": 0.5, "evidence": ["code-08", "code-10"], "notes": "Escalation tier: multi-day sessions, hardest work that justifies cost. Opus-5-vs-Fable-5 ordering genuinely unresolved in sources." },
+        { "rank": 6, "provider": "openai", "model": "gpt-5.6-sol", "effortTier": "high", "strength": 5, "confidence": 0.5, "evidence": ["code-01", "code-05", "code-07"], "notes": "Codex CLI; tops/near-tops Terminal-Bench 2.1." },
+        { "rank": 7, "provider": "xai", "model": "grok-4.6", "effortTier": "high", "strength": 5, "confidence": 0.35, "evidence": ["code-11"], "notes": "Strong benchmark, thin community corroboration for hours-long sessions." },
+        { "rank": 8, "provider": "google", "model": "gemini-3.1-pro-preview", "effortTier": "high", "strength": 5, "confidence": 0.35, "evidence": ["code-04", "code-12"], "notes": "Best Google option; least evidence of long-session coding use." }
       ]
     },
     {
@@ -216,16 +293,18 @@
     },
     {
       "taskType": "debugging-root-cause",
-      "asOf": "2026-09-01",
+      "asOf": "2026-10-09",
       "status": "current",
       "confidence": 0.28,
-      "meta": { "survivingPrinciple": "Unclear root cause = high/maximum effort across every provider's community; known root cause = medium. The 85%-vs-5% Senior-SWE-bench gap was a verifier-confirmed misread (actually Terminal-Bench+ trajectory data vs a pre-release GPT build)." },
+      "meta": { "survivingPrinciple": "Unclear root cause = high/maximum effort across every provider's community; known root cause = medium. The 85%-vs-5% Senior-SWE-bench gap was a verifier-confirmed misread (actually Terminal-Bench+ trajectory data vs a pre-release GPT build).", "ownerDecision": "2026-10-09 (S15): keep the 2026-10-04 pick at rank 1; Fable 5.1 and GPT-6 Astra listed below it on their evidence." },
       "rankedChoices": [
         { "rank": 1, "provider": "anthropic", "model": "claude-fable-5", "effortTier": "high", "strength": 5, "confidence": 0.35, "evidence": ["debug-01", "debug-02"], "notes": "Edges Opus 5 on Senior SWE-bench Bug&Perf Investigation (29.1% vs 28.2% pass@1 — near-tie, not a gap); independent testers report root-cause catches others missed." },
-        { "rank": 2, "provider": "anthropic", "model": "claude-opus-5", "effortTier": "maximum", "strength": 5, "confidence": 0.3, "evidence": ["debug-03"], "notes": "Benchmark-strong; live-usage complaints about latency/token burn at max." },
-        { "rank": 3, "provider": "openai", "model": "gpt-5.6-sol", "effortTier": "high", "strength": 5, "confidence": 0.25, "evidence": ["debug-05"], "notes": "Anecdotal deep-dive wins; finder cited superseded 5.3/5.4 models — treat as lineage evidence." },
-        { "rank": 4, "provider": "google", "model": "gemini-3.1-pro", "effortTier": "high", "strength": 5, "confidence": 0.25, "evidence": ["debug-07"], "notes": "'Strongest security intuition' (command-injection catches) but highest run-to-run variance." },
-        { "rank": 5, "provider": "xai", "model": "grok-4.6", "effortTier": "high", "strength": 5, "confidence": 0.2, "evidence": ["debug-09"], "notes": "Praised on hard async/deadlock bugs; thinnest evidence base." }
+        { "rank": 2, "provider": "anthropic", "model": "claude-fable-5-1", "effortTier": "high", "strength": 5, "confidence": 0.55, "evidence": ["r2026-10-09-benchlm-fable-opus5", "r2026-10-09-vals-tb4", "r2026-10-09-benchlm-tb4"], "notes": "Proxy evidence: Bug Hunt Bench 43 fixes vs Opus 5 27; TB4 58.1 vs Fable 5 41.4 (Vals). No direct root-cause benchmark; successor to the Fable 5 pick." },
+        { "rank": 3, "provider": "openai", "model": "gpt-6-astra", "effortTier": "high", "strength": 5, "confidence": 0.55, "evidence": ["r2026-10-09-benchlm-bughunt", "r2026-10-09-vals-tb4", "r2026-10-09-benchlm-fable-opus5"], "notes": "Proxy evidence: Bug Hunt Bench 45.0 fixes at max (43.0 xhigh) vs Opus 5 27.0 (BenchLM Fable 5.1 vs Opus 5); TB4 59.6 vs Opus 5 53.5 (Vals). Bug Hunt is display-only on BenchLM." },
+        { "rank": 4, "provider": "anthropic", "model": "claude-opus-5", "effortTier": "maximum", "strength": 5, "confidence": 0.3, "evidence": ["debug-03"], "notes": "Benchmark-strong; live-usage complaints about latency/token burn at max." },
+        { "rank": 5, "provider": "openai", "model": "gpt-5.6-sol", "effortTier": "high", "strength": 5, "confidence": 0.25, "evidence": ["debug-05"], "notes": "Anecdotal deep-dive wins; finder cited superseded 5.3/5.4 models — treat as lineage evidence." },
+        { "rank": 6, "provider": "google", "model": "gemini-3.1-pro-preview", "effortTier": "high", "strength": 5, "confidence": 0.25, "evidence": ["debug-07"], "notes": "'Strongest security intuition' (command-injection catches) but highest run-to-run variance." },
+        { "rank": 7, "provider": "xai", "model": "grok-4.6", "effortTier": "high", "strength": 5, "confidence": 0.2, "evidence": ["debug-09"], "notes": "Praised on hard async/deadlock bugs; thinnest evidence base." }
       ]
     },
     {
@@ -237,7 +316,7 @@
       "rankedChoices": [
         { "rank": 1, "provider": "openai", "model": "gpt-5.6-sol", "effortTier": "high", "strength": 5, "confidence": 0.22, "evidence": ["debug-10"], "notes": "Lineage-inferred from GPT-5.2's F1 60.5% top placement; 5.6 itself unmeasured." },
         { "rank": 2, "provider": "anthropic", "model": "claude-opus-5", "effortTier": "high", "strength": 5, "confidence": 0.22, "evidence": ["debug-11"], "notes": "Lineage-inferred from Opus 4.6 (F1 59.8%, highest recall 61.8%). Higher recall / more false positives profile." },
-        { "rank": 3, "provider": "google", "model": "gemini-3.1-pro", "effortTier": "high", "strength": 5, "confidence": 0.2, "evidence": ["debug-12"], "notes": "Mid-pack on the same dated benchmark (F1 52.1%)." }
+        { "rank": 3, "provider": "google", "model": "gemini-3.1-pro-preview", "effortTier": "high", "strength": 5, "confidence": 0.2, "evidence": ["debug-12"], "notes": "Mid-pack on the same dated benchmark (F1 52.1%)." }
       ]
     },
     {
@@ -249,32 +328,36 @@
         { "rank": 1, "provider": "anthropic", "model": "claude-opus-5", "effortTier": "high", "strength": 5, "confidence": 0.35, "evidence": ["arch-01", "arch-02", "arch-05"], "notes": "HIGH not max: over-scoping at max is vendor-acknowledged, not just Reddit folklore (verifier-confirmed)." },
         { "rank": 2, "provider": "anthropic", "model": "claude-fable-5", "effortTier": "medium", "strength": 5, "confidence": 0.3, "evidence": ["arch-05"], "notes": "r/ClaudeAI consensus: Fable 5 for planning because it stays scoped; Opus for implementation after." },
         { "rank": 3, "provider": "openai", "model": "gpt-5.6-sol", "effortTier": "high", "strength": 5, "confidence": 0.25, "evidence": ["arch-06"], "notes": "Finder measured GPT-5.5 (superseded); fastest-to-correct-structure on nested-spec planning." },
-        { "rank": 4, "provider": "google", "model": "gemini-3.1-pro", "effortTier": "high", "strength": 5, "confidence": 0.3, "evidence": ["arch-08"], "notes": "~70% of Opus/GPT depth at ~1/3 cost — the value pick for drafts." }
+        { "rank": 4, "provider": "google", "model": "gemini-3.1-pro-preview", "effortTier": "high", "strength": 5, "confidence": 0.3, "evidence": ["arch-08"], "notes": "~70% of Opus/GPT depth at ~1/3 cost — the value pick for drafts." }
       ]
     },
     {
       "taskType": "math-reasoning",
-      "asOf": "2026-09-01",
+      "asOf": "2026-10-09",
       "status": "current",
       "confidence": 0.3,
       "meta": { "staleReason": "FrontierMath v1 numbers (GPT-5.5 51.7% T1-3) predate FrontierMath v2 (2026-06-12) and GPT-5.6; ordering defensible, numbers stale." },
       "rankedChoices": [
-        { "rank": 1, "provider": "openai", "model": "gpt-5.6-sol", "effortTier": "high", "strength": 5, "confidence": 0.3, "evidence": ["arch-09", "arch-10"], "notes": "Lineage: GPT-5.5 led FrontierMath v1; 5.6 unmeasured on v2 in this pass." },
-        { "rank": 2, "provider": "google", "model": "gemini-3.1-pro", "effortTier": "maximum", "strength": 5, "confidence": 0.3, "evidence": ["arch-11", "arch-12"], "notes": "Deep Think solved a previously-unsolved Tier-4 problem (Epoch AI primary source)." },
-        { "rank": 3, "provider": "anthropic", "model": "claude-opus-5", "effortTier": "high", "strength": 5, "confidence": 0.3, "evidence": ["arch-03"], "notes": "HLE-strong; not the stated math leader." },
-        { "rank": 4, "provider": "xai", "model": "grok-4.6", "effortTier": "high", "strength": 5, "confidence": 0.25, "evidence": ["arch-07"], "notes": "AIME-strong historically; no current FrontierMath figure documented." }
+        { "rank": 1, "provider": "openai", "model": "gpt-6-astra", "effortTier": "high", "strength": 5, "confidence": 0.6, "evidence": ["r2026-10-09-benchlm-astra-sol", "r2026-10-09-vals-proofbench"], "notes": "Beats GPT-5.6 Sol: FrontierMath v2 Tier 4 97.6 vs 83.0, ARC-AGI-2 95 vs 92.5 (BenchLM); Lean ProofBench 99 vs 83 (Vals). Effort used in those runs is not stated." },
+        { "rank": 2, "provider": "openai", "model": "gpt-5.6-sol", "effortTier": "high", "strength": 5, "confidence": 0.3, "evidence": ["arch-09", "arch-10"], "notes": "Lineage: GPT-5.5 led FrontierMath v1; 5.6 unmeasured on v2 in this pass." },
+        { "rank": 3, "provider": "google", "model": "gemini-3.1-pro-preview", "effortTier": "maximum", "strength": 5, "confidence": 0.3, "evidence": ["arch-11", "arch-12"], "notes": "Deep Think solved a previously-unsolved Tier-4 problem (Epoch AI primary source)." },
+        { "rank": 4, "provider": "anthropic", "model": "claude-opus-5", "effortTier": "high", "strength": 5, "confidence": 0.3, "evidence": ["arch-03"], "notes": "HLE-strong; not the stated math leader." },
+        { "rank": 5, "provider": "xai", "model": "grok-4.6", "effortTier": "high", "strength": 5, "confidence": 0.25, "evidence": ["arch-07"], "notes": "AIME-strong historically; no current FrontierMath figure documented." }
       ]
     },
     {
       "taskType": "frontend-build",
-      "asOf": "2026-09-01",
+      "asOf": "2026-10-09",
       "status": "current",
       "confidence": 0.5,
       "rankedChoices": [
-        { "rank": 1, "provider": "anthropic", "model": "claude-opus-5", "effortTier": "maximum", "strength": 5, "confidence": 0.5, "evidence": ["frontend-01", "frontend-02"], "notes": "claude-opus-5-max #1 on arena.ai WebDev board — verifier re-confirmed on fresh Aug-30-2026 primary data. The one place max effort is evidence-backed." },
-        { "rank": 2, "provider": "openai", "model": "gpt-5.6-sol", "effortTier": "maximum", "strength": 5, "confidence": 0.45, "evidence": ["frontend-03"], "notes": "gpt-5.6-sol-xhigh top-5 on same board." },
-        { "rank": 3, "provider": "google", "model": "gemini-3.7-flash", "effortTier": "high", "strength": 4, "confidence": 0.3, "evidence": ["frontend-05"], "notes": "Gemini absent from current WebDev top-10 despite topping Nov-2025 snapshots." },
-        { "rank": 4, "provider": "xai", "model": "grok-4.6", "effortTier": "high", "strength": 5, "confidence": 0.3, "evidence": ["frontend-08"], "notes": "1318 on DesignArena Website snapshot — above GPT-5.5, below Claude/Gemini entries there." }
+        { "rank": 1, "provider": "anthropic", "model": "claude-sonnet-5-5", "effortTier": "maximum", "strength": 5, "confidence": 0.55, "evidence": ["r2026-10-09-arena-webdev", "r2026-10-09-vals-vibecode"], "notes": "WebDev Arena: sonnet-5.5-xhigh 1774 vs opus-5-max 1691 (high 1715). Max itself is unmeasured. Vibe Code Bench v1.1: 92.39% #1 vs Opus 5 88.40%." },
+        { "rank": 2, "provider": "openai", "model": "gpt-6-astra", "effortTier": "maximum", "strength": 5, "confidence": 0.55, "evidence": ["r2026-10-09-arena-webdev", "r2026-10-09-vals-vibecode"], "notes": "WebDev Arena: astra-max 1786 (#2) vs opus-5-max 1691; Vibe Code Bench 89.59% vs Opus 5 88.40% (near-tie). Arena entry is at max, cockpit maximum runs max." },
+        { "rank": 3, "provider": "anthropic", "model": "claude-fable-5-1", "effortTier": "maximum", "strength": 5, "confidence": 0.55, "evidence": ["r2026-10-09-arena-webdev", "r2026-10-09-vals-vibecode"], "notes": "WebDev Arena: fable-5.1-max 1744 vs opus-5-max 1691; Vibe Code Bench 90.26% vs Opus 5 88.40%. About 5x Sonnet 5.5 price for lower scores." },
+        { "rank": 4, "provider": "anthropic", "model": "claude-opus-5", "effortTier": "maximum", "strength": 5, "confidence": 0.5, "evidence": ["frontend-01", "frontend-02"], "notes": "claude-opus-5-max #1 on arena.ai WebDev board — verifier re-confirmed on fresh Aug-30-2026 primary data. The one place max effort is evidence-backed." },
+        { "rank": 5, "provider": "openai", "model": "gpt-5.6-sol", "effortTier": "maximum", "strength": 5, "confidence": 0.45, "evidence": ["frontend-03"], "notes": "gpt-5.6-sol-xhigh top-5 on same board." },
+        { "rank": 6, "provider": "google", "model": "gemini-3.7-flash", "effortTier": "high", "strength": 4, "confidence": 0.3, "evidence": ["frontend-05"], "notes": "Gemini absent from current WebDev top-10 despite topping Nov-2025 snapshots." },
+        { "rank": 7, "provider": "xai", "model": "grok-4.6", "effortTier": "high", "strength": 5, "confidence": 0.3, "evidence": ["frontend-08"], "notes": "1318 on DesignArena Website snapshot — above GPT-5.5, below Claude/Gemini entries there." }
       ]
     },
     {
@@ -318,10 +401,10 @@
       "confidence": 0.45,
       "meta": { "effortNA": true, "mediaSource": "higgsfield-model-database", "sourcesDisagree": "Catalog research ranked GPT Image 2 first (0.55); the owner's media database picks FLUX.2 and wins (owner decision 2026-10-03)." },
       "rankedChoices": [
-        { "rank": 1, "provider": "higgsfield", "model": "flux-2", "effortTier": "medium", "strength": 5, "confidence": 0.45, "evidence": ["hfdb-flux-2"], "notes": "Media database pick (excellent · medium): Text-in-image and typography. Runs through the Higgsfield connector." },
+        { "rank": 1, "provider": "higgsfield", "model": "flux_2", "effortTier": "medium", "strength": 5, "confidence": 0.45, "evidence": ["hfdb-flux-2"], "notes": "Media database pick (excellent · medium): Text-in-image and typography. Runs through the Higgsfield connector." },
         { "rank": 2, "provider": "openai", "model": "gpt-image-2", "effortTier": "medium", "strength": 5, "confidence": 0.55, "evidence": ["image-01", "image-02", "image-03", "image-04"], "notes": "#1 on AA (Elo 1370) and arena.ai t2i (1382±4, 75k votes) + image-edit (1462±4, 212k votes) — verifier re-pulled fresh. ~98.5-99% verbatim text." },
-        { "rank": 3, "provider": "google", "model": "nano-banana-2", "effortTier": "medium", "strength": 4, "confidence": 0.45, "evidence": ["image-05", "image-06"], "notes": "Verifier correction: NB2 (gemini-3.1-flash-image), not Pro, is the right Google pick here." },
-        { "rank": 4, "provider": "xai", "model": "grok-imagine-2.0", "effortTier": "medium", "strength": 4, "confidence": 0.35, "evidence": ["image-07"], "notes": "#2 LMArena at launch; few votes." }
+        { "rank": 3, "provider": "google", "model": "gemini-3.1-flash-image", "effortTier": "medium", "strength": 4, "confidence": 0.45, "evidence": ["image-05", "image-06"], "notes": "Verifier correction: NB2 (gemini-3.1-flash-image), not Pro, is the right Google pick here." },
+        { "rank": 4, "provider": "xai", "model": "grok-imagine-image-2.0", "effortTier": "medium", "strength": 4, "confidence": 0.35, "evidence": ["image-07"], "notes": "#2 LMArena at launch; few votes." }
       ]
     },
     {
@@ -331,9 +414,9 @@
       "confidence": 0.6,
       "meta": { "effortNA": true, "mediaSource": "higgsfield-model-database", "sourcesDisagree": "Catalog research ranked Nano Banana 2 first (0.38); the owner's media database picks Gemini 3 Pro Image and wins (owner decision 2026-10-03)." },
       "rankedChoices": [
-        { "rank": 1, "provider": "higgsfield", "model": "nano-banana-pro", "effortTier": "medium", "strength": 5, "confidence": 0.6, "evidence": ["hfdb-nano-banana-pro"], "notes": "Media database pick (leading · high): Photoreal human drama and character / face consistency. Runs through the Higgsfield connector." },
-        { "rank": 2, "provider": "google", "model": "nano-banana-2", "effortTier": "medium", "strength": 4, "confidence": 0.38, "evidence": ["image-05", "image-08"], "notes": "Independent tested ranking: 'most believable humans, precise anatomy, natural poses'." },
-        { "rank": 3, "provider": "xai", "model": "grok-imagine-2.0", "effortTier": "medium", "strength": 4, "confidence": 0.3, "evidence": ["image-09"], "notes": "Native 4MP fine detail; less reliable on subtle naturalism." },
+        { "rank": 1, "provider": "higgsfield", "model": "nano_banana_pro", "effortTier": "medium", "strength": 5, "confidence": 0.6, "evidence": ["hfdb-nano-banana-pro"], "notes": "Media database pick (leading · high): Photoreal human drama and character / face consistency. Runs through the Higgsfield connector." },
+        { "rank": 2, "provider": "google", "model": "gemini-3.1-flash-image", "effortTier": "medium", "strength": 4, "confidence": 0.38, "evidence": ["image-05", "image-08"], "notes": "Independent tested ranking: 'most believable humans, precise anatomy, natural poses'." },
+        { "rank": 3, "provider": "xai", "model": "grok-imagine-image-2.0", "effortTier": "medium", "strength": 4, "confidence": 0.3, "evidence": ["image-09"], "notes": "Native 4MP fine detail; less reliable on subtle naturalism." },
         { "rank": 4, "provider": "openai", "model": "gpt-image-2", "effortTier": "medium", "strength": 5, "confidence": 0.35, "evidence": ["image-02"], "notes": "Tops overall boards; community edge on skin/materials goes to Google." }
       ]
     },
@@ -344,10 +427,10 @@
       "confidence": 0.6,
       "meta": { "effortNA": true, "mediaSource": "higgsfield-model-database" },
       "rankedChoices": [
-        { "rank": 1, "provider": "higgsfield", "model": "nano-banana-pro", "effortTier": "medium", "strength": 5, "confidence": 0.6, "evidence": ["hfdb-nano-banana-pro"], "notes": "Media database pick (leading · high): Photoreal human drama and character / face consistency. Runs through the Higgsfield connector." },
-        { "rank": 2, "provider": "higgsfield", "model": "kling-omni-image", "effortTier": "medium", "strength": 5, "confidence": 0.45, "evidence": ["hfdb-kling-omni-image"], "notes": "Media database pick (leading · medium): Character-consistent stills from up to 10 references. Runs through the Higgsfield connector." },
-        { "rank": 3, "provider": "google", "model": "nano-banana-pro", "effortTier": "medium", "strength": 4, "confidence": 0.3, "evidence": ["image-10", "image-11"], "notes": "Verifier's vendor-doc fetch says Pro leads (5 chars vs NB2's 4); spot-check found one secondary source attributing 5-char to NB2 instead — Pro-vs-NB2 attribution contested, confidence trimmed." },
-        { "rank": 4, "provider": "xai", "model": "grok-imagine-2.0", "effortTier": "medium", "strength": 4, "confidence": 0.2, "evidence": ["image-12"], "notes": "Cost/throughput alternative; behind Google for dedicated consistency workflows." }
+        { "rank": 1, "provider": "higgsfield", "model": "nano_banana_pro", "effortTier": "medium", "strength": 5, "confidence": 0.6, "evidence": ["hfdb-nano-banana-pro"], "notes": "Media database pick (leading · high): Photoreal human drama and character / face consistency. Runs through the Higgsfield connector." },
+        { "rank": 2, "provider": "higgsfield", "model": "kling_omni_image", "effortTier": "medium", "strength": 5, "confidence": 0.45, "evidence": ["hfdb-kling-omni-image"], "notes": "Media database pick (leading · medium): Character-consistent stills from up to 10 references. Runs through the Higgsfield connector." },
+        { "rank": 3, "provider": "google", "model": "gemini-3-pro-image", "effortTier": "medium", "strength": 4, "confidence": 0.3, "evidence": ["image-10", "image-11"], "notes": "Verifier's vendor-doc fetch says Pro leads (5 chars vs NB2's 4); spot-check found one secondary source attributing 5-char to NB2 instead — Pro-vs-NB2 attribution contested, confidence trimmed." },
+        { "rank": 4, "provider": "xai", "model": "grok-imagine-image-2.0", "effortTier": "medium", "strength": 4, "confidence": 0.2, "evidence": ["image-12"], "notes": "Cost/throughput alternative; behind Google for dedicated consistency workflows." }
       ]
     },
     {
@@ -357,11 +440,10 @@
       "confidence": 0.45,
       "meta": { "effortNA": true, "notes": "Anthropic has no video model. Sora 2 API sunsets 2026-09-24 — not a routing target. Third-party context: Kling v3 / Seedance 2.0 outrank all scoped providers on raw AA Elo (house creative stack already routes there via Higgsfield).", "mediaSource": "higgsfield-model-database", "sourcesDisagree": "Catalog research ranked Veo 3.1 first (0.45); its own note already says Kling 3 / Seedance 2.0 outrank it. The media database wins." },
       "rankedChoices": [
-        { "rank": 1, "provider": "higgsfield", "model": "kling3-0", "effortTier": "medium", "strength": 5, "confidence": 0.45, "evidence": ["hfdb-kling3-0"], "notes": "Media database pick (excellent · medium): Action, camera control and dynamic motion. Runs through the Higgsfield connector." },
-        { "rank": 2, "provider": "higgsfield", "model": "seedance-2-0", "effortTier": "medium", "strength": 5, "confidence": 0.45, "evidence": ["hfdb-seedance-2-0"], "notes": "Media database pick (excellent · medium): Multi-shot storytelling and environments. Runs through the Higgsfield connector." },
-        { "rank": 3, "provider": "google", "model": "veo-3.1", "effortTier": "medium", "strength": 5, "confidence": 0.45, "evidence": ["video-01", "video-02"], "notes": "Reviewer consensus for multi-layered prompts, photographic grading, native audio, 4K." },
-        { "rank": 4, "provider": "google", "model": "gemini-omni-flash", "effortTier": "medium", "strength": 4, "confidence": 0.4, "evidence": ["video-04"], "notes": "Verifier: omitted by finder despite outranking Veo 3.1 on the AA with-audio board." },
-        { "rank": 5, "provider": "xai", "model": "grok-imagine-video-1.5", "effortTier": "medium", "strength": 4, "confidence": 0.35, "evidence": ["video-06"], "notes": "720p/~10s caps make it weaker for cinematic use specifically." }
+        { "rank": 1, "provider": "higgsfield", "model": "kling3_0", "effortTier": "medium", "strength": 5, "confidence": 0.45, "evidence": ["hfdb-kling3-0"], "notes": "Media database pick (excellent · medium): Action, camera control and dynamic motion. Runs through the Higgsfield connector." },
+        { "rank": 2, "provider": "higgsfield", "model": "seedance_2_0", "effortTier": "medium", "strength": 5, "confidence": 0.45, "evidence": ["hfdb-seedance-2-0"], "notes": "Media database pick (excellent · medium): Multi-shot storytelling and environments. Runs through the Higgsfield connector." },
+        { "rank": 3, "provider": "google", "model": "gemini-omni-1.1-flash", "effortTier": "medium", "strength": 5, "confidence": 0.45, "evidence": ["video-01", "video-02", "video-04", "s15-google-omni-1-1-flash"], "notes": "Google's replacement for veo-3.1-generate-preview and gemini-omni-flash-preview (shut down 2026-10-22), in its predecessor's place. Reviewer consensus for multi-layered prompts, photographic grading, native audio, 4K." },
+        { "rank": 4, "provider": "xai", "model": "grok-imagine-video-1.5", "effortTier": "medium", "strength": 4, "confidence": 0.35, "evidence": ["video-06"], "notes": "720p/~10s caps make it weaker for cinematic use specifically." }
       ]
     },
     {
@@ -371,10 +453,9 @@
       "confidence": 0.35,
       "meta": { "effortNA": true, "notes": "Grok-vs-OmniFlash #1 ordering contested — verifier showed the two Elo snapshots (1473 vs 1109/1179) cannot both be the same board. Treat ranks 1-2 as a toss-up: Grok on price, Omni Flash on conversational edit loops.", "mediaSource": "higgsfield-model-database" },
       "rankedChoices": [
-        { "rank": 1, "provider": "higgsfield", "model": "gemini-omni", "effortTier": "medium", "strength": 3, "confidence": 0.35, "evidence": ["hfdb-gemini-omni"], "notes": "Media database pick (unranked · medium): Fast multi-shot iteration and pre-viz passes. Runs through the Higgsfield connector." },
-        { "rank": 2, "provider": "google", "model": "gemini-omni-flash", "effortTier": "medium", "strength": 4, "confidence": 0.4, "evidence": ["video-04", "video-08"], "notes": "1179 Elo AA i2v-with-audio; $0.10/s; multi-turn natural-language editing." },
-        { "rank": 3, "provider": "xai", "model": "grok-imagine-video-1.5", "effortTier": "medium", "strength": 4, "confidence": 0.4, "evidence": ["video-07"], "notes": "Cheapest access (SuperGrok $30/mo), fastest generation per comparisons." },
-        { "rank": 4, "provider": "google", "model": "veo-3.1", "effortTier": "medium", "strength": 5, "confidence": 0.4, "evidence": ["video-02"], "notes": "Final-fidelity pass, not the iteration loop." }
+        { "rank": 1, "provider": "higgsfield", "model": "gemini_omni", "effortTier": "medium", "strength": 3, "confidence": 0.35, "evidence": ["hfdb-gemini-omni"], "notes": "Media database pick (unranked · medium): Fast multi-shot iteration and pre-viz passes. Runs through the Higgsfield connector." },
+        { "rank": 2, "provider": "google", "model": "gemini-omni-1.1-flash", "effortTier": "medium", "strength": 4, "confidence": 0.4, "evidence": ["video-04", "video-08", "video-02", "s15-google-omni-1-1-flash"], "notes": "Google's replacement for gemini-omni-flash-preview and veo-3.1-generate-preview (shut down 2026-10-22), in its predecessor's place. 1179 Elo AA i2v-with-audio; $0.10/s; multi-turn natural-language editing." },
+        { "rank": 3, "provider": "xai", "model": "grok-imagine-video-1.5", "effortTier": "medium", "strength": 4, "confidence": 0.4, "evidence": ["video-07"], "notes": "Cheapest access (SuperGrok $30/mo), fastest generation per comparisons." }
       ]
     },
     {
@@ -385,20 +466,21 @@
       "rankedChoices": [
         { "rank": 1, "provider": "anthropic", "model": "claude-opus-5", "effortTier": "high", "strength": 5, "confidence": 0.55, "evidence": ["research-01", "research-02", "research-03"], "notes": "DeepSearchQA 77.0% (verifier re-confirmed on independent BenchLM snapshot), BrowseComp 0.908 #2 overall." },
         { "rank": 2, "provider": "openai", "model": "gpt-5.6-sol", "effortTier": "maximum", "strength": 5, "confidence": 0.5, "evidence": ["research-04", "research-05"], "notes": "Close 2nd both boards; xhigh is OpenAI's documented tier for deep research." },
-        { "rank": 3, "provider": "google", "model": "gemini-3.1-pro", "effortTier": "high", "strength": 5, "confidence": 0.35, "evidence": ["research-06"], "notes": "Deep Research Max 93.3% is a vendor claim for the agent product, not the base model; base model trails on BrowseComp (0.859)." },
+        { "rank": 3, "provider": "google", "model": "gemini-3.1-pro-preview", "effortTier": "high", "strength": 5, "confidence": 0.35, "evidence": ["research-06"], "notes": "Deep Research Max 93.3% is a vendor claim for the agent product, not the base model; base model trails on BrowseComp (0.859)." },
         { "rank": 4, "provider": "xai", "model": "grok-4.6", "effortTier": "high", "strength": 5, "confidence": 0.2, "evidence": ["research-08"], "notes": "No DeepSearchQA/BrowseComp entry found — placement by absence." }
       ]
     },
     {
       "taskType": "tool-use-browsing",
-      "asOf": "2026-09-01",
+      "asOf": "2026-10-09",
       "status": "current",
       "confidence": 0.45,
       "rankedChoices": [
         { "rank": 1, "provider": "anthropic", "model": "claude-opus-5", "effortTier": "high", "strength": 5, "confidence": 0.45, "evidence": ["research-09", "research-10"], "notes": "OSWorld 2.0 70.6% vs GPT-5.6 Sol 62.6%; tau-bench reliability pillar was single-source (verifier-flagged)." },
-        { "rank": 2, "provider": "openai", "model": "gpt-5.6-sol", "effortTier": "high", "strength": 5, "confidence": 0.4, "evidence": ["research-10"], "notes": "Second on both directly comparable boards." },
-        { "rank": 3, "provider": "xai", "model": "grok-4.6", "effortTier": "high", "strength": 5, "confidence": 0.3, "evidence": ["research-11"], "notes": "Top-two tau^3-Banking, 88.4% Terminal-Bench per AA; no OSWorld/BrowseComp comparable." },
-        { "rank": 4, "provider": "google", "model": "gemini-3.1-pro", "effortTier": "medium", "strength": 5, "confidence": 0.3, "evidence": ["research-12"], "notes": "Trails on every directly comparable metric found." }
+        { "rank": 2, "provider": "openai", "model": "gpt-6-astra", "effortTier": "high", "strength": 5, "confidence": 0.55, "evidence": ["r2026-10-09-benchlm-astra-sol", "r2026-10-09-vals-ksp", "s15-benchlm-opus5-astra"], "notes": "Beats GPT-5.6 Sol: OSWorld 2.0 72.6 vs 62.6; KSP long-horizon index 90.5 vs 23.8. Opus 5 stays first: OSWorld 2.0 70.6, BenchLM agentic 77.9 vs Astra 70.9." },
+        { "rank": 3, "provider": "openai", "model": "gpt-5.6-sol", "effortTier": "high", "strength": 5, "confidence": 0.4, "evidence": ["research-10"], "notes": "Second on both directly comparable boards." },
+        { "rank": 4, "provider": "xai", "model": "grok-4.6", "effortTier": "high", "strength": 5, "confidence": 0.3, "evidence": ["research-11"], "notes": "Top-two tau^3-Banking, 88.4% Terminal-Bench per AA; no OSWorld/BrowseComp comparable." },
+        { "rank": 5, "provider": "google", "model": "gemini-3.1-pro-preview", "effortTier": "medium", "strength": 5, "confidence": 0.3, "evidence": ["research-12"], "notes": "Trails on every directly comparable metric found." }
       ]
     },
     {
@@ -411,7 +493,7 @@
         { "rank": 1, "provider": "anthropic", "model": "claude-opus-5", "effortTier": "low", "strength": 5, "confidence": 0.3, "evidence": ["writing-01", "writing-03"], "notes": "Tops EQBench CW v3 (Elo 2116) + Longform (86.3); low effort to curb verbosity/'slop' per community." },
         { "rank": 2, "provider": "anthropic", "model": "claude-fable-5", "effortTier": "low", "strength": 5, "confidence": 0.25, "evidence": ["writing-04"], "notes": "#2 Longform; described as tuned for warmer prose." },
         { "rank": 3, "provider": "openai", "model": "gpt-5.6-sol", "effortTier": "medium", "strength": 5, "confidence": 0.25, "evidence": ["writing-05"], "notes": "Third on CW v3." },
-        { "rank": 4, "provider": "google", "model": "gemini-3.1-pro", "effortTier": "high", "strength": 5, "confidence": 0.25, "evidence": ["writing-05"], "notes": "The pick when fiction needs real-world grounding; trails on pure prose boards." },
+        { "rank": 4, "provider": "google", "model": "gemini-3.1-pro-preview", "effortTier": "high", "strength": 5, "confidence": 0.25, "evidence": ["writing-05"], "notes": "The pick when fiction needs real-world grounding; trails on pure prose boards." },
         { "rank": 5, "provider": "xai", "model": "grok-4.6", "effortTier": "low", "strength": 5, "confidence": 0.2, "evidence": ["writing-09"], "notes": "Finder measured retired grok-4.5 (Elo 1576, clearly last); 4.6 unmeasured on prose." }
       ]
     },
@@ -422,7 +504,7 @@
       "confidence": 0.12,
       "meta": { "rankingRefuted": true, "staleReason": "Sole source (AA Multilingual Index) measures reasoning IN a language, not translation quality; its Claude leader is a legacy model (opus-4-6-max). Traditional-Chinese-specific evidence: NOT FOUND (Reddit blocked in research environment). Needs a dedicated re-research pass before routing on it." },
       "rankedChoices": [
-        { "rank": 1, "provider": "google", "model": "gemini-3.1-pro", "effortTier": "high", "strength": 5, "confidence": 0.2, "evidence": ["writing-07"], "notes": "#1 'All languages average' + #1 in 10+ languages, #2 Chinese — broadest coverage on the proxy board." },
+        { "rank": 1, "provider": "google", "model": "gemini-3.1-pro-preview", "effortTier": "high", "strength": 5, "confidence": 0.2, "evidence": ["writing-07"], "notes": "#1 'All languages average' + #1 in 10+ languages, #2 Chinese — broadest coverage on the proxy board." },
         { "rank": 2, "provider": "anthropic", "model": "claude-opus-5", "effortTier": "high", "strength": 5, "confidence": 0.15, "evidence": ["writing-07", "writing-08"], "notes": "Claude lineage tied-#1 Chinese on the proxy — measured on legacy opus-4-6-max, inferred forward; secondary roundups favor Claude when tone/nuance matter." }
       ]
     },
@@ -446,7 +528,7 @@
       "confidence": 0.25,
       "meta": { "staleReason": "All four tested checkpoints on OCRBench v2 are superseded models; Claude-vs-GPT ordering rested on a cross-metric misread (Chinese-subset vs English-subset scores). Google's lead is the only surviving signal. Open-weight Qwen3-VL/Kimi K2.5 top the general board (context, out of scope)." },
       "rankedChoices": [
-        { "rank": 1, "provider": "google", "model": "gemini-3.1-pro", "effortTier": "medium", "strength": 5, "confidence": 0.3, "evidence": ["data-08"], "notes": "Gemini lineage leads scoped providers on OCRBench v2 English private-data task." },
+        { "rank": 1, "provider": "google", "model": "gemini-3.1-pro-preview", "effortTier": "medium", "strength": 5, "confidence": 0.3, "evidence": ["data-08"], "notes": "Gemini lineage leads scoped providers on OCRBench v2 English private-data task." },
         { "rank": 2, "provider": "openai", "model": "gpt-5.6-sol", "effortTier": "medium", "strength": 5, "confidence": 0.2, "evidence": ["data-09"], "notes": "Tested checkpoint predates current lineup — likely understated." },
         { "rank": 3, "provider": "anthropic", "model": "claude-opus-5", "effortTier": "medium", "strength": 5, "confidence": 0.2, "evidence": ["data-10"], "notes": "Verifier: original rank-2 rested on comparing its Chinese-subset score to others' English scores." }
       ]
@@ -469,7 +551,7 @@
       "meta": { "survivingPrinciple": "Bulk work gets the cheapest current small model at minimal/none effort — reasoning budget on classify/extract is wasted spend (vendor-documented). Vendor-level cost ordering (Google cheapest, Anthropic priciest) verified on first-party pricing pages." },
       "rankedChoices": [
         { "rank": 1, "provider": "google", "model": "gemini-3.5-flash-lite", "effortTier": "minimal", "strength": 2, "confidence": 0.4, "evidence": ["bulk-01", "bulk-05"], "notes": "Cheapest current line; 2.5 Flash-Lite measured 0.29s TTFT but sunsets Oct 2026." },
-        { "rank": 2, "provider": "openai", "model": "gpt-5.6-luna", "effortTier": "minimal", "strength": 3, "confidence": 0.35, "evidence": ["bulk-02", "bulk-06"], "notes": "reasoning_effort=none; nano lineage designed for classification/extraction (gpt-5-nano deprecated — verifier)." },
+        { "rank": 2, "provider": "openai", "model": "gpt-5.6-luna", "effortTier": "low", "strength": 3, "confidence": 0.35, "evidence": ["bulk-02", "bulk-06"], "notes": "reasoning_effort=low (the Codex CLI floor, codex debug models 2026-10-06); nano lineage designed for classification/extraction (gpt-5-nano deprecated — verifier)." },
         { "rank": 3, "provider": "anthropic", "model": "claude-haiku-4-5", "effortTier": "low", "strength": 2, "confidence": 0.35, "evidence": ["bulk-04", "bulk-09"], "notes": "0.46s latency / 137 tok/s measured (OpenRouter); 3-20x the price of nano/flash-lite tiers." },
         { "rank": 4, "provider": "xai", "model": "grok-4.6", "effortTier": "low", "strength": 5, "confidence": 0.2, "evidence": ["bulk-03"], "notes": "Grok 4.1 Fast / Code Fast 1 retired per xAI docs (verifier) — no current xAI bulk tier." }
       ]
@@ -481,7 +563,7 @@
       "confidence": 0.6,
       "meta": { "effortNA": true, "mediaSource": "higgsfield-model-database" },
       "rankedChoices": [
-        { "rank": 1, "provider": "higgsfield", "model": "nano-banana-flash", "effortTier": "medium", "strength": 5, "confidence": 0.6, "evidence": ["hfdb-nano-banana-flash"], "notes": "Media database pick (excellent · high): Stylized and anime stills. Runs through the Higgsfield connector." }
+        { "rank": 1, "provider": "higgsfield", "model": "nano_banana_flash", "effortTier": "medium", "strength": 5, "confidence": 0.6, "evidence": ["hfdb-nano-banana-flash"], "notes": "Media database pick (excellent · high): Stylized and anime stills. Runs through the Higgsfield connector." }
       ]
     },
     {
@@ -491,7 +573,7 @@
       "confidence": 0.35,
       "meta": { "effortNA": true, "mediaSource": "higgsfield-model-database" },
       "rankedChoices": [
-        { "rank": 1, "provider": "higgsfield", "model": "flux-kontext", "effortTier": "medium", "strength": 3, "confidence": 0.35, "evidence": ["hfdb-flux-kontext"], "notes": "Media database pick (unranked · medium): Character-consistent multi-turn image editing. Runs through the Higgsfield connector." }
+        { "rank": 1, "provider": "higgsfield", "model": "flux_kontext", "effortTier": "medium", "strength": 3, "confidence": 0.35, "evidence": ["hfdb-flux-kontext"], "notes": "Media database pick (unranked · medium): Character-consistent multi-turn image editing. Runs through the Higgsfield connector." }
       ]
     },
     {
@@ -501,7 +583,7 @@
       "confidence": 0.6,
       "meta": { "effortNA": true, "mediaSource": "higgsfield-model-database" },
       "rankedChoices": [
-        { "rank": 1, "provider": "higgsfield", "model": "recraft-v4-1", "effortTier": "medium", "strength": 5, "confidence": 0.6, "evidence": ["hfdb-recraft-v4-1"], "notes": "Media database pick (leading · high): Logos, icon sets and brand marks as editable SVG. Runs through the Higgsfield connector." }
+        { "rank": 1, "provider": "higgsfield", "model": "recraft_v4_1", "effortTier": "medium", "strength": 5, "confidence": 0.6, "evidence": ["hfdb-recraft-v4-1"], "notes": "Media database pick (leading · high): Logos, icon sets and brand marks as editable SVG. Runs through the Higgsfield connector." }
       ]
     },
     {
@@ -511,7 +593,7 @@
       "confidence": 0.45,
       "meta": { "effortNA": true, "mediaSource": "higgsfield-model-database" },
       "rankedChoices": [
-        { "rank": 1, "provider": "higgsfield", "model": "happy-horse-video", "effortTier": "medium", "strength": 5, "confidence": 0.45, "evidence": ["hfdb-happy-horse-video"], "notes": "Media database pick (leading · medium): Native dialogue and lip sync. Runs through the Higgsfield connector." }
+        { "rank": 1, "provider": "higgsfield", "model": "happy_horse_video", "effortTier": "medium", "strength": 5, "confidence": 0.45, "evidence": ["hfdb-happy-horse-video"], "notes": "Media database pick (leading · medium): Native dialogue and lip sync. Runs through the Higgsfield connector." }
       ]
     },
     {
@@ -521,7 +603,7 @@
       "confidence": 0.45,
       "meta": { "effortNA": true, "mediaSource": "higgsfield-model-database" },
       "rankedChoices": [
-        { "rank": 1, "provider": "higgsfield", "model": "cinematic-studio-video-3-5", "effortTier": "medium", "strength": 4, "confidence": 0.45, "evidence": ["hfdb-cinematic-studio-video-3-5"], "notes": "Media database pick (good · medium): Product and commercial video. Runs through the Higgsfield connector." }
+        { "rank": 1, "provider": "higgsfield", "model": "cinematic_studio_video_3_5", "effortTier": "medium", "strength": 4, "confidence": 0.45, "evidence": ["hfdb-cinematic-studio-video-3-5"], "notes": "Media database pick (good · medium): Product and commercial video. Runs through the Higgsfield connector." }
       ]
     },
     {
@@ -531,7 +613,7 @@
       "confidence": 0.35,
       "meta": { "effortNA": true, "mediaSource": "higgsfield-model-database" },
       "rankedChoices": [
-        { "rank": 1, "provider": "higgsfield", "model": "text2speech-v2", "effortTier": "medium", "strength": 3, "confidence": 0.35, "evidence": ["hfdb-text2speech-v2"], "notes": "Media database pick (unranked · medium): Narration and directed voiceover (five-engine router). Runs through the Higgsfield connector." }
+        { "rank": 1, "provider": "higgsfield", "model": "text2speech_v2", "effortTier": "medium", "strength": 3, "confidence": 0.35, "evidence": ["hfdb-text2speech-v2"], "notes": "Media database pick (unranked · medium): Narration and directed voiceover (five-engine router). Runs through the Higgsfield connector." }
       ]
     },
     {
@@ -541,9 +623,9 @@
       "confidence": 0.2,
       "meta": { "effortNA": true, "mediaSource": "higgsfield-model-database" },
       "rankedChoices": [
-        { "rank": 1, "provider": "higgsfield", "model": "sonilo-music", "effortTier": "medium", "strength": 3, "confidence": 0.2, "evidence": ["hfdb-sonilo-music"], "notes": "Media database pick (unranked · low): Instrumental beds, jingles and backing tracks. Runs through the Higgsfield connector." },
-        { "rank": 2, "provider": "higgsfield", "model": "mirelo-text-to-audio", "effortTier": "medium", "strength": 3, "confidence": 0.2, "evidence": ["hfdb-mirelo-text-to-audio"], "notes": "Media database pick (unranked · low): Sound effects, ambience and foley. Runs through the Higgsfield connector." },
-        { "rank": 3, "provider": "higgsfield", "model": "seed-audio", "effortTier": "medium", "strength": 3, "confidence": 0.35, "evidence": ["hfdb-seed-audio"], "notes": "Media database pick (unranked · medium): One-shot scene audio: dialogue, ambience, music and effects together. Runs through the Higgsfield connector." }
+        { "rank": 1, "provider": "higgsfield", "model": "sonilo_music", "effortTier": "medium", "strength": 3, "confidence": 0.2, "evidence": ["hfdb-sonilo-music"], "notes": "Media database pick (unranked · low): Instrumental beds, jingles and backing tracks. Runs through the Higgsfield connector." },
+        { "rank": 2, "provider": "higgsfield", "model": "mirelo_text_to_audio", "effortTier": "medium", "strength": 3, "confidence": 0.2, "evidence": ["hfdb-mirelo-text-to-audio"], "notes": "Media database pick (unranked · low): Sound effects, ambience and foley. Runs through the Higgsfield connector." },
+        { "rank": 3, "provider": "higgsfield", "model": "seed_audio", "effortTier": "medium", "strength": 3, "confidence": 0.35, "evidence": ["hfdb-seed-audio"], "notes": "Media database pick (unranked · medium): One-shot scene audio: dialogue, ambience, music and effects together. Runs through the Higgsfield connector." }
       ]
     },
     {
@@ -553,7 +635,7 @@
       "confidence": 0.45,
       "meta": { "effortNA": true, "mediaSource": "higgsfield-model-database" },
       "rankedChoices": [
-        { "rank": 1, "provider": "higgsfield", "model": "meshy-v6-text-to-3d", "effortTier": "medium", "strength": 5, "confidence": 0.45, "evidence": ["hfdb-meshy-v6-text-to-3d"], "notes": "Media database pick (excellent · medium): Rigged, game-ready 3D assets. Runs through the Higgsfield connector." }
+        { "rank": 1, "provider": "higgsfield", "model": "meshy_v6_text_to_3d", "effortTier": "medium", "strength": 5, "confidence": 0.45, "evidence": ["hfdb-meshy-v6-text-to-3d"], "notes": "Media database pick (excellent · medium): Rigged, game-ready 3D assets. Runs through the Higgsfield connector." }
       ]
     },
     {
@@ -563,8 +645,8 @@
       "confidence": 0.2,
       "meta": { "effortNA": true, "mediaSource": "higgsfield-model-database" },
       "rankedChoices": [
-        { "rank": 1, "provider": "higgsfield", "model": "bytedance-image-upscale", "effortTier": "medium", "strength": 3, "confidence": 0.2, "evidence": ["hfdb-bytedance-image-upscale"], "notes": "Media database pick (unranked · low): Quick 2K / 4K image upscale. Runs through the Higgsfield connector." },
-        { "rank": 2, "provider": "higgsfield", "model": "bytedance-video-upscale", "effortTier": "medium", "strength": 3, "confidence": 0.35, "evidence": ["hfdb-bytedance-video-upscale"], "notes": "Media database pick (unranked · medium): Batch video upscale to 1080p / 2K / 4K. Runs through the Higgsfield connector." }
+        { "rank": 1, "provider": "higgsfield", "model": "bytedance_image_upscale", "effortTier": "medium", "strength": 3, "confidence": 0.2, "evidence": ["hfdb-bytedance-image-upscale"], "notes": "Media database pick (unranked · low): Quick 2K / 4K image upscale. Runs through the Higgsfield connector." },
+        { "rank": 2, "provider": "higgsfield", "model": "bytedance_video_upscale", "effortTier": "medium", "strength": 3, "confidence": 0.35, "evidence": ["hfdb-bytedance-video-upscale"], "notes": "Media database pick (unranked · medium): Batch video upscale to 1080p / 2K / 4K. Runs through the Higgsfield connector." }
       ]
     },
     {
