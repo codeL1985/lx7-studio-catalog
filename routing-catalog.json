@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0.0",
-  "revision": "2026-10-09",
+  "revision": "2026-10-17.1",
   "generatedBy": "deep-research-pass-1 (13 finder tracks + per-track adversarial verifier + completeness critic; run wf_b143dab6-475)",
   "reviewBy": "2026-11-01",
   "stalenessPolicy": { "maxRowAgeDays": 60, "note": "Model lineups churned ~monthly during research; every row carries asOf. Treat any row older than maxRowAgeDays as stale and re-verify before acting on it." },
@@ -16,7 +16,7 @@
     },
     "crossCuttingFindings": ["CONFIRMED (0.70): one-shot UI generation rewards top effort — max/high/xhigh variants dominate the WebDev Arena top ranks on fresh Aug-30-2026 primary data.", "CONFIRMED-directional: effort should scale with task AMBIGUITY, not task category alone — known-root-cause debugging = medium; unclear root cause = high/maximum.", "Claude Opus 5 over-scopes at max effort (vendor-acknowledged): default it to high for architecture/scoped work, reserve max for one-shot UI/frontier problems.", "Anthropic ships no image/video generation model — encoded as absent, not unscored.", "Sora 2 API sunsets 2026-09-24; OpenAI has no video routing target after that date."],
     "mediaDatabase": { "source": "owner's Higgsfield model database (elite-visual-director references/model-picker.json)", "version": 1, "verifiedOn": "2026-08-20", "models": 97, "sources": 404, "rule": "The media database wins where it disagrees with this catalog (owner decision 2026-10-03). Its picks are rank 1 on every media row; the catalog's own research stays below them as evidence.", "confidenceMap": { "note": "Database words -> 0-1. rated = in its best-choices table; unranked = candidate only.", "rated:HIGH": 0.6, "rated:MEDIUM": 0.45, "rated:LOW": 0.3, "unranked:HIGH": 0.4, "unranked:MEDIUM": 0.35, "unranked:LOW": 0.2 } },
-    "lastResearch": { "day": "2026-10-09", "provider": "claude", "accepted": 15, "skipped": [] }
+    "lastResearch": { "day": "2026-10-17", "provider": "codex", "accepted": 1, "skipped": [] }
   },
   "agents": [
     {
@@ -32,12 +32,14 @@
         {
           "id": "claude-opus-5-5",
           "label": "Claude Opus 5.5",
-          "available": false,
-          "meta": { "source": "https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md", "checkedOn": "2026-10-09", "status": "not-runnable-here", "notes": "Listed, not routed: the installed CLI cannot run it (probe 2026-10-09).", "addedIn": "claude-code 2.1.280", "waitingFor": "a Claude Code that recognizes it: 2.1.257 answers unrecognized_model. The changelog adds it in 2.1.280; whether an earlier release runs it is unproven (Sonnet 5.5, added in 2.1.284, runs on 2.1.257).", "evidence": ["s15-probe-not-runnable"], "pricingEvidence": ["s15-claude-models-overview"] },
+          "available": true,
+          "meta": { "source": "https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md", "checkedOn": "2026-10-09", "status": "runnable", "notes": "Listed, not routed: the installed CLI cannot run it (probe 2026-10-09).", "addedIn": "claude-code 2.1.280", "waitingFor": "a Claude Code that recognizes it: 2.1.257 answers unrecognized_model. The changelog adds it in 2.1.280; whether an earlier release runs it is unproven (Sonnet 5.5, added in 2.1.284, runs on 2.1.257).", "evidence": ["s15-probe-not-runnable"], "pricingEvidence": ["s15-claude-models-overview"], "strengthFrom": "claude-opus-5", "unlockedOn": "2026-10-17", "unlockedBy": "2.1.301 (Claude Code)" },
           "cost": 3,
           "latency": 2,
           "contextWindow": 1000000,
-          "modalities": ["text", "vision"]
+          "modalities": ["text", "vision"],
+          "strength": 5,
+          "capabilities": ["coding", "debugging", "architecture", "research", "design-review", "general"]
         },
         {
           "id": "claude-sonnet-5-5",
@@ -78,20 +80,20 @@
         {
           "id": "gpt-6-sol",
           "label": "GPT-6 Sol",
-          "available": false,
-          "meta": { "addedIn": "codex 0.157.0", "waitingFor": "Codex with a ChatGPT account: the server answers 400 \"not supported when using Codex with a ChatGPT account\" (Codex 0.153.4 also lacks its model metadata).", "source": "https://github.com/openai/codex/releases/tag/rust-v0.157.0", "evidence": ["s15-probe-not-runnable"], "checkedOn": "2026-10-09", "status": "not-runnable-here", "notes": "Listed, not routed: the installed CLI cannot run it (probe 2026-10-09)." }
+          "available": true,
+          "meta": { "addedIn": "codex 0.157.0", "waitingFor": "Codex with a ChatGPT account: the server answers 400 \"not supported when using Codex with a ChatGPT account\" (Codex 0.153.4 also lacks its model metadata).", "source": "https://github.com/openai/codex/releases/tag/rust-v0.157.0", "evidence": ["s15-probe-not-runnable"], "checkedOn": "2026-10-09", "status": "runnable", "notes": "Listed, not routed: the installed CLI cannot run it (probe 2026-10-09).", "unlockedOn": "2026-10-17", "unlockedBy": "codex-cli 0.163.0" }
         },
         {
           "id": "gpt-6.1-sol",
           "label": "GPT-6.1 Sol",
-          "available": false,
-          "meta": { "source": "https://github.com/openai/codex/releases/tag/rust-v0.161.0", "checkedOn": "2026-10-09", "status": "not-runnable-here", "notes": "Listed, not routed: the installed CLI cannot run it (probe 2026-10-09).", "addedIn": "codex 0.161.0", "waitingFor": "Codex with a ChatGPT account: the server answers 400 \"not supported when using Codex with a ChatGPT account\" (Codex 0.153.4 also lacks its model metadata).", "evidence": ["s15-probe-not-runnable"] }
+          "available": true,
+          "meta": { "source": "https://github.com/openai/codex/releases/tag/rust-v0.161.0", "checkedOn": "2026-10-09", "status": "runnable", "notes": "Listed, not routed: the installed CLI cannot run it (probe 2026-10-09).", "addedIn": "codex 0.161.0", "waitingFor": "Codex with a ChatGPT account: the server answers 400 \"not supported when using Codex with a ChatGPT account\" (Codex 0.153.4 also lacks its model metadata).", "evidence": ["s15-probe-not-runnable"], "unlockedOn": "2026-10-17", "unlockedBy": "codex-cli 0.163.0" }
         },
         {
           "id": "gpt-6-luna",
           "label": "GPT-6 Luna",
-          "available": false,
-          "meta": { "source": "https://github.com/openai/codex/releases/tag/rust-v0.157.0", "checkedOn": "2026-10-09", "status": "not-runnable-here", "notes": "Listed, not routed: the installed CLI cannot run it (probe 2026-10-09).", "addedIn": "codex 0.157.0", "waitingFor": "Codex with a ChatGPT account: the server answers 400 \"not supported when using Codex with a ChatGPT account\" (Codex 0.153.4 also lacks its model metadata).", "evidence": ["s15-probe-not-runnable"] }
+          "available": true,
+          "meta": { "source": "https://github.com/openai/codex/releases/tag/rust-v0.157.0", "checkedOn": "2026-10-09", "status": "runnable", "notes": "Listed, not routed: the installed CLI cannot run it (probe 2026-10-09).", "addedIn": "codex 0.157.0", "waitingFor": "Codex with a ChatGPT account: the server answers 400 \"not supported when using Codex with a ChatGPT account\" (Codex 0.153.4 also lacks its model metadata).", "evidence": ["s15-probe-not-runnable"], "unlockedOn": "2026-10-17", "unlockedBy": "codex-cli 0.163.0" }
         },
         {
           "id": "gpt-6-astra",
@@ -204,7 +206,7 @@
     { "id": "3d-asset", "capability": "3d-generation", "description": "Meshes, game-ready and rigged 3D assets" },
     { "id": "upscale-restore", "capability": "image-generation", "description": "Upscale or restore images and video" },
     { "id": "message-triage", "capability": "general", "description": "Reads each message and names the kind of work it is, before anything else runs" },
-    { "id": "conversation", "capability": "general", "description": "Plain chat: questions, explanations and small talk that start no work" },
+    { "id": "conversation", "capability": "general", "standingLeaderboards": true, "description": "Conversation partner: the model that talks with the user before any work is handed to a specialist. Rank by: humanlike, warm, natural conversation (not robotic; e.g. EQ-Bench, LMArena chat/creative); thinks before answering and gives its own view, honest feedback and pushback; taste (aesthetic judgement); clear, visible logic; factual accuracy about the project; conversation efficiency (answers what was asked first, concise, quick turnaround). Cost is secondary." },
     { "id": "planning", "capability": "architecture", "description": "Writes the plan the person approves: the tasks, their order and who does each" },
     { "id": "memory-reading", "capability": "research", "description": "Reads a project's documents once so agents remember them" }
   ],
@@ -264,18 +266,19 @@
   "recommendations": [
     {
       "taskType": "long-horizon-coding",
-      "asOf": "2026-10-09",
+      "asOf": "2026-10-17",
       "status": "current",
       "confidence": 0.5,
       "rankedChoices": [
-        { "rank": 1, "provider": "anthropic", "model": "claude-sonnet-5-5", "effortTier": "high", "strength": 5, "confidence": 0.6, "evidence": ["r2026-10-09-vals-tb4", "r2026-10-09-benchlm-tb4", "r2026-10-09-vals-migration", "r2026-10-09-benchlm-coding"], "notes": "Beats Opus 5 on Terminal-Bench 4.0 (64.1 vs 53.5 Vals; 61.8 vs 53.9 BenchLM), Code Migration (69.8 vs 57.5), BenchLM coding (84.2 vs 71.4). TB4 was run at max; high is unmeasured." },
-        { "rank": 2, "provider": "openai", "model": "gpt-6-astra", "effortTier": "high", "strength": 5, "confidence": 0.65, "evidence": ["r2026-10-09-benchlm-tb4", "r2026-10-09-llmlearner-tb4", "r2026-10-09-vals-tb4", "r2026-10-09-vals-ksp", "r2026-10-09-vals-migration"], "notes": "Codex TB4 58.2 at max, 57.9 at high: high is the knee of the effort curve. Beats Opus 5 on Vals TB4 (59.6 vs 53.5), Code Migration and the KSP long-horizon index (90.5 vs 18.8). BenchLM and llmlearner TB4 count as one source." },
-        { "rank": 3, "provider": "anthropic", "model": "claude-fable-5-1", "effortTier": "maximum", "strength": 5, "confidence": 0.55, "evidence": ["r2026-10-09-benchlm-tb4", "r2026-10-09-llmlearner-tb4", "r2026-10-09-vals-programbench", "r2026-10-09-vals-migration"], "notes": "TB4 sweep 43.3 low, 53.9 medium, 54.5 high, 57.9 xhigh/max, so maximum buys +3.3 over high. Beats Opus 5 on TB4 and ProgramBench; loses to it on Code Migration (54.6 vs 57.5). Successor to Fable 5. BenchLM and llmlearner TB4 count as one source (0.60 -> 0.55)." },
-        { "rank": 4, "provider": "anthropic", "model": "claude-opus-5", "effortTier": "high", "strength": 5, "confidence": 0.5, "evidence": ["code-02", "code-03", "code-06", "code-09"], "notes": "Rank survived adversarial check on fresh AA data. Harness caveat: evidence measures Claude Code (model+harness), not raw API." },
-        { "rank": 5, "provider": "anthropic", "model": "claude-fable-5", "effortTier": "maximum", "strength": 5, "confidence": 0.5, "evidence": ["code-08", "code-10"], "notes": "Escalation tier: multi-day sessions, hardest work that justifies cost. Opus-5-vs-Fable-5 ordering genuinely unresolved in sources." },
-        { "rank": 6, "provider": "openai", "model": "gpt-5.6-sol", "effortTier": "high", "strength": 5, "confidence": 0.5, "evidence": ["code-01", "code-05", "code-07"], "notes": "Codex CLI; tops/near-tops Terminal-Bench 2.1." },
-        { "rank": 7, "provider": "xai", "model": "grok-4.6", "effortTier": "high", "strength": 5, "confidence": 0.35, "evidence": ["code-11"], "notes": "Strong benchmark, thin community corroboration for hours-long sessions." },
-        { "rank": 8, "provider": "google", "model": "gemini-3.1-pro-preview", "effortTier": "high", "strength": 5, "confidence": 0.35, "evidence": ["code-04", "code-12"], "notes": "Best Google option; least evidence of long-session coding use." }
+        { "rank": 1, "provider": "anthropic", "model": "claude-opus-5-5", "effortTier": "maximum", "strength": 5, "confidence": 0.72, "evidence": ["r2026-10-17-elma-coding", "r2026-10-17-modelmatch-coding", "r2026-10-17-bdm-agent", "r2026-10-17-opus-effort-thread"], "notes": "Opus 5.5 won four of six hour-capped application builds and leads fresh agent Code and Work snapshots; maximum effort is best reserved for large, interconnected work." },
+        { "rank": 2, "provider": "anthropic", "model": "claude-sonnet-5-5", "effortTier": "high", "strength": 5, "confidence": 0.6, "evidence": ["r2026-10-09-vals-tb4", "r2026-10-09-benchlm-tb4", "r2026-10-09-vals-migration", "r2026-10-09-benchlm-coding"], "notes": "Beats Opus 5 on Terminal-Bench 4.0 (64.1 vs 53.5 Vals; 61.8 vs 53.9 BenchLM), Code Migration (69.8 vs 57.5), BenchLM coding (84.2 vs 71.4). TB4 was run at max; high is unmeasured." },
+        { "rank": 3, "provider": "openai", "model": "gpt-6-astra", "effortTier": "high", "strength": 5, "confidence": 0.65, "evidence": ["r2026-10-09-benchlm-tb4", "r2026-10-09-llmlearner-tb4", "r2026-10-09-vals-tb4", "r2026-10-09-vals-ksp", "r2026-10-09-vals-migration"], "notes": "Codex TB4 58.2 at max, 57.9 at high: high is the knee of the effort curve. Beats Opus 5 on Vals TB4 (59.6 vs 53.5), Code Migration and the KSP long-horizon index (90.5 vs 18.8). BenchLM and llmlearner TB4 count as one source." },
+        { "rank": 4, "provider": "anthropic", "model": "claude-fable-5-1", "effortTier": "maximum", "strength": 5, "confidence": 0.55, "evidence": ["r2026-10-09-benchlm-tb4", "r2026-10-09-llmlearner-tb4", "r2026-10-09-vals-programbench", "r2026-10-09-vals-migration"], "notes": "TB4 sweep 43.3 low, 53.9 medium, 54.5 high, 57.9 xhigh/max, so maximum buys +3.3 over high. Beats Opus 5 on TB4 and ProgramBench; loses to it on Code Migration (54.6 vs 57.5). Successor to Fable 5. BenchLM and llmlearner TB4 count as one source (0.60 -> 0.55)." },
+        { "rank": 5, "provider": "anthropic", "model": "claude-opus-5", "effortTier": "high", "strength": 5, "confidence": 0.5, "evidence": ["code-02", "code-03", "code-06", "code-09"], "notes": "Rank survived adversarial check on fresh AA data. Harness caveat: evidence measures Claude Code (model+harness), not raw API." },
+        { "rank": 6, "provider": "anthropic", "model": "claude-fable-5", "effortTier": "maximum", "strength": 5, "confidence": 0.5, "evidence": ["code-08", "code-10"], "notes": "Escalation tier: multi-day sessions, hardest work that justifies cost. Opus-5-vs-Fable-5 ordering genuinely unresolved in sources." },
+        { "rank": 7, "provider": "openai", "model": "gpt-5.6-sol", "effortTier": "high", "strength": 5, "confidence": 0.5, "evidence": ["code-01", "code-05", "code-07"], "notes": "Codex CLI; tops/near-tops Terminal-Bench 2.1." },
+        { "rank": 8, "provider": "xai", "model": "grok-4.6", "effortTier": "high", "strength": 5, "confidence": 0.35, "evidence": ["code-11"], "notes": "Strong benchmark, thin community corroboration for hours-long sessions." },
+        { "rank": 9, "provider": "google", "model": "gemini-3.1-pro-preview", "effortTier": "high", "strength": 5, "confidence": 0.35, "evidence": ["code-04", "code-12"], "notes": "Best Google option; least evidence of long-session coding use." }
       ]
     },
     {
@@ -347,28 +350,31 @@
     },
     {
       "taskType": "frontend-build",
-      "asOf": "2026-10-09",
+      "asOf": "2026-10-17",
       "status": "current",
       "confidence": 0.5,
       "rankedChoices": [
-        { "rank": 1, "provider": "anthropic", "model": "claude-sonnet-5-5", "effortTier": "maximum", "strength": 5, "confidence": 0.55, "evidence": ["r2026-10-09-arena-webdev", "r2026-10-09-vals-vibecode"], "notes": "WebDev Arena: sonnet-5.5-xhigh 1774 vs opus-5-max 1691 (high 1715). Max itself is unmeasured. Vibe Code Bench v1.1: 92.39% #1 vs Opus 5 88.40%." },
-        { "rank": 2, "provider": "openai", "model": "gpt-6-astra", "effortTier": "maximum", "strength": 5, "confidence": 0.55, "evidence": ["r2026-10-09-arena-webdev", "r2026-10-09-vals-vibecode"], "notes": "WebDev Arena: astra-max 1786 (#2) vs opus-5-max 1691; Vibe Code Bench 89.59% vs Opus 5 88.40% (near-tie). Arena entry is at max, cockpit maximum runs max." },
-        { "rank": 3, "provider": "anthropic", "model": "claude-fable-5-1", "effortTier": "maximum", "strength": 5, "confidence": 0.55, "evidence": ["r2026-10-09-arena-webdev", "r2026-10-09-vals-vibecode"], "notes": "WebDev Arena: fable-5.1-max 1744 vs opus-5-max 1691; Vibe Code Bench 90.26% vs Opus 5 88.40%. About 5x Sonnet 5.5 price for lower scores." },
-        { "rank": 4, "provider": "anthropic", "model": "claude-opus-5", "effortTier": "maximum", "strength": 5, "confidence": 0.5, "evidence": ["frontend-01", "frontend-02"], "notes": "claude-opus-5-max #1 on arena.ai WebDev board — verifier re-confirmed on fresh Aug-30-2026 primary data. The one place max effort is evidence-backed." },
-        { "rank": 5, "provider": "openai", "model": "gpt-5.6-sol", "effortTier": "maximum", "strength": 5, "confidence": 0.45, "evidence": ["frontend-03"], "notes": "gpt-5.6-sol-xhigh top-5 on same board." },
-        { "rank": 6, "provider": "google", "model": "gemini-3.7-flash", "effortTier": "high", "strength": 4, "confidence": 0.3, "evidence": ["frontend-05"], "notes": "Gemini absent from current WebDev top-10 despite topping Nov-2025 snapshots." },
-        { "rank": 7, "provider": "xai", "model": "grok-4.6", "effortTier": "high", "strength": 5, "confidence": 0.3, "evidence": ["frontend-08"], "notes": "1318 on DesignArena Website snapshot — above GPT-5.5, below Claude/Gemini entries there." }
+        { "rank": 1, "provider": "anthropic", "model": "claude-opus-5-5", "effortTier": "maximum", "strength": 5, "confidence": 0.65, "evidence": ["r2026-10-17-modelmatch-coding", "r2026-10-17-elma-coding", "r2026-10-17-opus-effort-thread"], "notes": "A fresh coding guide ranks Opus 5.5 first for frontend/UI, while an independent six-app benchmark shows strong end-to-end implementation." },
+        { "rank": 2, "provider": "anthropic", "model": "claude-sonnet-5-5", "effortTier": "maximum", "strength": 5, "confidence": 0.55, "evidence": ["r2026-10-09-arena-webdev", "r2026-10-09-vals-vibecode"], "notes": "WebDev Arena: sonnet-5.5-xhigh 1774 vs opus-5-max 1691 (high 1715). Max itself is unmeasured. Vibe Code Bench v1.1: 92.39% #1 vs Opus 5 88.40%." },
+        { "rank": 3, "provider": "openai", "model": "gpt-6-astra", "effortTier": "maximum", "strength": 5, "confidence": 0.55, "evidence": ["r2026-10-09-arena-webdev", "r2026-10-09-vals-vibecode"], "notes": "WebDev Arena: astra-max 1786 (#2) vs opus-5-max 1691; Vibe Code Bench 89.59% vs Opus 5 88.40% (near-tie). Arena entry is at max, cockpit maximum runs max." },
+        { "rank": 4, "provider": "anthropic", "model": "claude-fable-5-1", "effortTier": "maximum", "strength": 5, "confidence": 0.55, "evidence": ["r2026-10-09-arena-webdev", "r2026-10-09-vals-vibecode"], "notes": "WebDev Arena: fable-5.1-max 1744 vs opus-5-max 1691; Vibe Code Bench 90.26% vs Opus 5 88.40%. About 5x Sonnet 5.5 price for lower scores." },
+        { "rank": 5, "provider": "anthropic", "model": "claude-opus-5", "effortTier": "maximum", "strength": 5, "confidence": 0.5, "evidence": ["frontend-01", "frontend-02"], "notes": "claude-opus-5-max #1 on arena.ai WebDev board — verifier re-confirmed on fresh Aug-30-2026 primary data. The one place max effort is evidence-backed." },
+        { "rank": 6, "provider": "openai", "model": "gpt-5.6-sol", "effortTier": "maximum", "strength": 5, "confidence": 0.45, "evidence": ["frontend-03"], "notes": "gpt-5.6-sol-xhigh top-5 on same board." },
+        { "rank": 7, "provider": "google", "model": "gemini-3.7-flash", "effortTier": "high", "strength": 4, "confidence": 0.3, "evidence": ["frontend-05"], "notes": "Gemini absent from current WebDev top-10 despite topping Nov-2025 snapshots." },
+        { "rank": 8, "provider": "xai", "model": "grok-4.6", "effortTier": "high", "strength": 5, "confidence": 0.3, "evidence": ["frontend-08"], "notes": "1318 on DesignArena Website snapshot — above GPT-5.5, below Claude/Gemini entries there." }
       ]
     },
     {
       "taskType": "frontend-aesthetic",
-      "asOf": "2026-09-01",
+      "asOf": "2026-10-17",
       "status": "current",
       "confidence": 0.15,
       "meta": { "rankingRefuted": true, "survivingPrinciple": "No defensible winner. Human-vote boards tilt Claude; the 'Gemini has better taste' blog claim used an obsolete Claude baseline. Use frontend-build ranking + the house design pipeline instead of trusting any model's raw taste." },
       "rankedChoices": [
-        { "rank": 1, "provider": "anthropic", "model": "claude-opus-5", "effortTier": "high", "strength": 5, "confidence": 0.3, "evidence": ["frontend-06", "frontend-07"], "notes": "Best surviving signal: top scoped-provider on DesignArena Website human-vote board (n=1 aggregator)." },
-        { "rank": 2, "provider": "google", "model": "gemini-3.7-flash", "effortTier": "medium", "strength": 4, "confidence": 0.2, "evidence": ["frontend-04"], "notes": "3.7/3.6 Flash tied just behind Opus 5 on same snapshot." }
+        { "rank": 1, "provider": "anthropic", "model": "claude-opus-5-5", "effortTier": "maximum", "strength": 5, "confidence": 0.8, "evidence": ["r2026-10-17.1-x-arena-brand-1016", "r2026-10-17.1-x-matchbook-frontend-1016", "r2026-10-17.1-x-reddit-taste-1017", "r2026-10-17.1-x-hn-image-html-1015"], "notes": "Opus 5.5 Maximum leads the fresh Brand & Marketing board and broader frontend/UI synthesis; practitioner reports also favor its initial visual taste, though generated effects still need runtime checks." },
+        { "rank": 2, "provider": "anthropic", "model": "claude-sonnet-5-5", "effortTier": "high", "strength": 5, "confidence": 0.58, "evidence": ["r2026-10-16-visualforge-1014", "r2026-10-16-matchbook-frontend-1013"], "notes": "Sonnet 5.5 is the top installed choice across the human-preference UI synthesis and VisualForge; the latter is exploratory and approximately tied with Astra." },
+        { "rank": 3, "provider": "anthropic", "model": "claude-opus-5", "effortTier": "high", "strength": 5, "confidence": 0.3, "evidence": ["frontend-06", "frontend-07"], "notes": "Best surviving signal: top scoped-provider on DesignArena Website human-vote board (n=1 aggregator)." },
+        { "rank": 4, "provider": "google", "model": "gemini-3.7-flash", "effortTier": "medium", "strength": 4, "confidence": 0.2, "evidence": ["frontend-04"], "notes": "3.7/3.6 Flash tied just behind Opus 5 on same snapshot." }
       ]
     },
     {
@@ -485,16 +491,17 @@
     },
     {
       "taskType": "long-form-writing",
-      "asOf": "2026-09-01",
+      "asOf": "2026-10-16",
       "status": "current",
       "confidence": 0.25,
       "meta": { "survivingPrinciple": "A Claude model leads prose and Grok trails; which Claude + which effort tier is contested (EQBench boards are one site/one judge; community reports 'slop' at defaults and recommends LOWER effort for prose)." },
       "rankedChoices": [
-        { "rank": 1, "provider": "anthropic", "model": "claude-opus-5", "effortTier": "low", "strength": 5, "confidence": 0.3, "evidence": ["writing-01", "writing-03"], "notes": "Tops EQBench CW v3 (Elo 2116) + Longform (86.3); low effort to curb verbosity/'slop' per community." },
-        { "rank": 2, "provider": "anthropic", "model": "claude-fable-5", "effortTier": "low", "strength": 5, "confidence": 0.25, "evidence": ["writing-04"], "notes": "#2 Longform; described as tuned for warmer prose." },
-        { "rank": 3, "provider": "openai", "model": "gpt-5.6-sol", "effortTier": "medium", "strength": 5, "confidence": 0.25, "evidence": ["writing-05"], "notes": "Third on CW v3." },
-        { "rank": 4, "provider": "google", "model": "gemini-3.1-pro-preview", "effortTier": "high", "strength": 5, "confidence": 0.25, "evidence": ["writing-05"], "notes": "The pick when fiction needs real-world grounding; trails on pure prose boards." },
-        { "rank": 5, "provider": "xai", "model": "grok-4.6", "effortTier": "low", "strength": 5, "confidence": 0.2, "evidence": ["writing-09"], "notes": "Finder measured retired grok-4.5 (Elo 1576, clearly last); 4.6 unmeasured on prose." }
+        { "rank": 1, "provider": "openai", "model": "gpt-6-astra", "effortTier": "high", "strength": 5, "confidence": 0.67, "evidence": ["r2026-10-16-aiwriting-1013", "r2026-10-16-llmwise-writing-1010"], "notes": "Astra high leads every installed model on the 115,682-verdict board and passed 5/5 in a smaller same-prompt check; the latter is only five prompts." },
+        { "rank": 2, "provider": "anthropic", "model": "claude-opus-5", "effortTier": "low", "strength": 5, "confidence": 0.3, "evidence": ["writing-01", "writing-03"], "notes": "Tops EQBench CW v3 (Elo 2116) + Longform (86.3); low effort to curb verbosity/'slop' per community." },
+        { "rank": 3, "provider": "anthropic", "model": "claude-fable-5", "effortTier": "low", "strength": 5, "confidence": 0.25, "evidence": ["writing-04"], "notes": "#2 Longform; described as tuned for warmer prose." },
+        { "rank": 4, "provider": "openai", "model": "gpt-5.6-sol", "effortTier": "medium", "strength": 5, "confidence": 0.25, "evidence": ["writing-05"], "notes": "Third on CW v3." },
+        { "rank": 5, "provider": "google", "model": "gemini-3.1-pro-preview", "effortTier": "high", "strength": 5, "confidence": 0.25, "evidence": ["writing-05"], "notes": "The pick when fiction needs real-world grounding; trails on pure prose boards." },
+        { "rank": 6, "provider": "xai", "model": "grok-4.6", "effortTier": "low", "strength": 5, "confidence": 0.2, "evidence": ["writing-09"], "notes": "Finder measured retired grok-4.5 (Elo 1576, clearly last); 4.6 unmeasured on prose." }
       ]
     },
     {
@@ -523,24 +530,27 @@
     },
     {
       "taskType": "vision-ocr-document",
-      "asOf": "2026-09-01",
+      "asOf": "2026-10-16",
       "status": "stale",
       "confidence": 0.25,
       "meta": { "staleReason": "All four tested checkpoints on OCRBench v2 are superseded models; Claude-vs-GPT ordering rested on a cross-metric misread (Chinese-subset vs English-subset scores). Google's lead is the only surviving signal. Open-weight Qwen3-VL/Kimi K2.5 top the general board (context, out of scope)." },
       "rankedChoices": [
-        { "rank": 1, "provider": "google", "model": "gemini-3.1-pro-preview", "effortTier": "medium", "strength": 5, "confidence": 0.3, "evidence": ["data-08"], "notes": "Gemini lineage leads scoped providers on OCRBench v2 English private-data task." },
-        { "rank": 2, "provider": "openai", "model": "gpt-5.6-sol", "effortTier": "medium", "strength": 5, "confidence": 0.2, "evidence": ["data-09"], "notes": "Tested checkpoint predates current lineup — likely understated." },
-        { "rank": 3, "provider": "anthropic", "model": "claude-opus-5", "effortTier": "medium", "strength": 5, "confidence": 0.2, "evidence": ["data-10"], "notes": "Verifier: original rank-2 rested on comparing its Chinese-subset score to others' English scores." }
+        { "rank": 1, "provider": "openai", "model": "gpt-6-astra", "effortTier": "low", "strength": 5, "confidence": 0.58, "evidence": ["r2026-10-16-roboflow-vision-1013", "r2026-10-16-coxit-casev-1012"], "notes": "Astra is the strongest installed vision choice, but low effort's 77.8% versus high effort's 77.6% OCR result is a single preliminary run, so treat the effort edge as provisional." },
+        { "rank": 2, "provider": "google", "model": "gemini-3.1-pro-preview", "effortTier": "medium", "strength": 5, "confidence": 0.3, "evidence": ["data-08"], "notes": "Gemini lineage leads scoped providers on OCRBench v2 English private-data task." },
+        { "rank": 3, "provider": "openai", "model": "gpt-5.6-sol", "effortTier": "medium", "strength": 5, "confidence": 0.2, "evidence": ["data-09"], "notes": "Tested checkpoint predates current lineup — likely understated." },
+        { "rank": 4, "provider": "anthropic", "model": "claude-opus-5", "effortTier": "medium", "strength": 5, "confidence": 0.2, "evidence": ["data-10"], "notes": "Verifier: original rank-2 rested on comparing its Chinese-subset score to others' English scores." }
       ]
     },
     {
       "taskType": "ui-screenshot-to-code",
-      "asOf": "2026-09-01",
+      "asOf": "2026-10-16",
       "status": "stale",
       "confidence": 0.15,
       "meta": { "rankingRefuted": true, "staleReason": "The cited board's current snapshot inverts the proposed ranks, and the two benchmarks that actually test screenshot->code have zero frontier coverage. Route via frontend-build until re-researched." },
       "rankedChoices": [
-        { "rank": 1, "provider": "anthropic", "model": "claude-opus-5", "effortTier": "high", "strength": 5, "confidence": 0.2, "evidence": ["data-06"], "notes": "Best surviving proxy signal only (DesignArena Website board, where Opus 5 is top scoped-provider entry)." }
+        { "rank": 1, "provider": "anthropic", "model": "claude-sonnet-5-5", "effortTier": "maximum", "strength": 5, "confidence": 0.58, "evidence": ["r2026-10-16-arena-image-webdev-1009", "r2026-10-16-matchbook-frontend-1013"], "notes": "Sonnet 5.5 is the highest-ranked installed choice; its 1–5 arena rank interval overlaps Astra, so the nine-point lead is not conclusive." },
+        { "rank": 2, "provider": "openai", "model": "gpt-6-astra", "effortTier": "maximum", "strength": 5, "confidence": 0.56, "evidence": ["r2026-10-16-arena-image-webdev-1009", "r2026-10-16-matchbook-frontend-1013"], "notes": "Astra is the close installed runner-up; its 1–5 arena rank interval overlaps Sonnet 5.5 despite a nine-point lower score." },
+        { "rank": 3, "provider": "anthropic", "model": "claude-opus-5", "effortTier": "high", "strength": 5, "confidence": 0.2, "evidence": ["data-06"], "notes": "Best surviving proxy signal only (DesignArena Website board, where Opus 5 is top scoped-provider entry)." }
       ]
     },
     {
@@ -662,13 +672,14 @@
     },
     {
       "taskType": "conversation",
-      "asOf": "2026-10-04",
+      "asOf": "2026-10-17",
       "status": "current",
       "confidence": 0.25,
-      "meta": { "ownerDecision": "2026-10-04", "survivingPrinciple": "Plain chat starts no work: a current mid model at low effort, never the flagship by default (same principle as scoped-edit)." },
+      "meta": { "ownerDecision": "2026-10-16", "survivingPrinciple": "Owner decision 2026-10-16 (L): I need a partner, not a machine: one that thinks, has taste and clear logic, and gives feedback. Rank on humanlike conversation, thinking, taste, logic, feedback and conversation efficiency. Supersedes the 2026-10-04 rule: plain chat = current mid model at low effort, never the flagship." },
       "rankedChoices": [
-        { "rank": 1, "provider": "anthropic", "model": "claude-sonnet-5", "effortTier": "low", "strength": 4, "confidence": 0.3, "evidence": [], "notes": "Owner rule 2026-10-04: every chat, live chat, plan and task follows this table; a low-cost fast model reads each message first, then the table decides. Pending research." },
-        { "rank": 2, "provider": "openai", "model": "gpt-5.6-terra", "effortTier": "low", "strength": 4, "confidence": 0.3, "evidence": [], "notes": "Same principle on Codex: current mid model, low effort." }
+        { "rank": 1, "provider": "anthropic", "model": "claude-opus-5-5", "effortTier": "high", "strength": 5, "confidence": 0.57, "evidence": ["r2026-10-17-creative-board", "r2026-10-17-bdm-agent"], "notes": "Opus 5.5 High leads fresh creative writing while Max leads a fresh chat-agent snapshot; warmth and project-memory accuracy were not separately measured." },
+        { "rank": 2, "provider": "anthropic", "model": "claude-sonnet-5", "effortTier": "low", "strength": 4, "confidence": 0.3, "evidence": [], "notes": "Placeholder from the superseded 2026-10-04 cheap-chat rule; research it against the 2026-10-16 partner criteria." },
+        { "rank": 3, "provider": "openai", "model": "gpt-5.6-terra", "effortTier": "low", "strength": 4, "confidence": 0.3, "evidence": [], "notes": "Placeholder from the superseded 2026-10-04 cheap-chat rule; research it against the 2026-10-16 partner criteria." }
       ]
     },
     {
@@ -695,7 +706,8 @@
     }
   ],
   "modelDefaults": {
-    "claude-opus-5": { "effort": "high", "asOf": "2026-09-01", "confidence": 0.35, "sources": ["arch-01", "arch-05"], "notes": "Over-scopes at max on scoped work (vendor-acknowledged, verifier-confirmed): default HIGH; max only where a task row asks for it (frontend-build)." }
+    "claude-opus-5": { "effort": "high", "asOf": "2026-09-01", "confidence": 0.35, "sources": ["arch-01", "arch-05"], "notes": "Over-scopes at max on scoped work (vendor-acknowledged, verifier-confirmed): default HIGH; max only where a task row asks for it (frontend-build)." },
+    "claude-sonnet-5-5": { "effort": "high", "asOf": "2026-10-16", "confidence": 0.62, "sources": ["r2026-10-16-anthropic-effort-current-1016", "r2026-10-16-stormeval-prs-1009"] }
   },
   "routeAdvice": {
     "adapter": "nvidia-nemo-switchyard",
