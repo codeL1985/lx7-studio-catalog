@@ -1,7 +1,7 @@
 {
  "schemaVersion": "1.0",
- "revision": "2026-10-03",
- "generatedAt": "2026-10-03T13:54:49Z",
+ "revision": "2026-11-12",
+ "generatedAt": "2026-11-11T21:37:36Z",
  "usageDenominators": {
   "claude": {
    "d30": 29,
@@ -18,6 +18,100 @@
   "source": "Owner's sessions, measured 2026-10-03 (S8)"
  },
  "items": [
+  {
+   "id": "openmontage",
+   "name": "OpenMontage",
+   "kind": "skill-bundle",
+   "tier": "media",
+   "default": "off",
+   "summary": "A video-production toolkit for scripting, narration, editing and rendering films from ideas or existing footage.",
+   "inclusion": "Owner-requested video toolkit (2026-10-08); full runtime setup is separate from copying skill files.",
+   "source": {
+    "type": "github",
+    "ref": "calesthio/OpenMontage",
+    "pin": "9327439db69021ab4b0e2776729bf3b58fdb5a87"
+   },
+   "install": {
+    "macTested": false,
+    "silent": false
+   },
+   "requires": [
+    "python",
+    "node",
+    "git",
+    "ffmpeg"
+   ],
+   "licence": "AGPL-3.0",
+   "plan": "free",
+   "priceNote": "Local editing and composition need no paid API key. Optional cloud generation is billed by the chosen provider.",
+   "pricingSource": "https://github.com/calesthio/OpenMontage",
+   "pricingCheckedAt": "2026-10-08",
+   "signIn": {
+    "method": "none",
+    "inApp": "no",
+    "how": "No account is required for local editing. Cloud providers need their own accounts and keys.",
+    "reasonIfNo": "Requires the full OpenMontage runtime, Python, Node.js and FFmpeg. Follow the official setup guide; copying its skill files alone is not enough."
+   },
+   "detect": {
+    "skills": [
+     "openmontage"
+    ]
+   },
+   "hosts": [
+    "claude",
+    "codex"
+   ]
+  },
+  {
+   "id": "skillspector",
+   "name": "NVIDIA SkillSpector",
+   "kind": "cli",
+   "tier": "core",
+   "default": "on",
+   "summary": "Checks skill files for security risks. Static scans do not guarantee safety.",
+   "inclusion": "default skill security scanner (owner decision 2026-10-07)",
+   "source": { "type": "pypi", "ref": "skillspector", "pin": "3c8e4b958fda9602e0044885f766be0e49f03585" },
+   "version": "2.12.0",
+   "install": {
+    "win": [{ "argv": ["uv", "tool", "install", "--python", "3.13", "git+https://github.com/NVIDIA/SkillSpector.git@3c8e4b958fda9602e0044885f766be0e49f03585"], "label": "Install NVIDIA SkillSpector", "timeoutSec": 600 }],
+    "mac": [{ "argv": ["uv", "tool", "install", "--python", "3.13", "git+https://github.com/NVIDIA/SkillSpector.git@3c8e4b958fda9602e0044885f766be0e49f03585"], "label": "Install NVIDIA SkillSpector", "timeoutSec": 600 }],
+    "macTested": false,
+    "silent": true
+   },
+   "update": [{ "argv": ["uv", "tool", "install", "--force", "--python", "3.13", "git+https://github.com/NVIDIA/SkillSpector.git@3c8e4b958fda9602e0044885f766be0e49f03585"], "label": "Update NVIDIA SkillSpector", "timeoutSec": 600 }],
+   "requires": ["python", "git"],
+   "licence": "Apache-2.0",
+   "plan": "free",
+   "priceNote": "Static scans are free. LLM analysis is not enabled by Lx7.",
+   "pricingSource": "https://github.com/NVIDIA/SkillSpector",
+   "pricingCheckedAt": "2026-10-07",
+   "signIn": { "method": "none", "inApp": "exists", "how": "No account or API key is needed for static scans." },
+   "probe": { "kind": "cli-version", "argv": ["skillspector", "--version"] },
+   "detect": { "cli": "skillspector" },
+   "hosts": ["claude", "codex"]
+  },
+  {
+   "id": "opencode",
+   "name": "OpenCode",
+   "kind": "cli",
+   "tier": "core",
+   "default": "on",
+   "summary": "Runs the models you choose through OpenRouter.",
+   "inclusion": "prerequisite (third agent, owner decision 2026-10-04)",
+   "source": { "type": "npm", "ref": "opencode-ai" },
+   "install": {
+    "win": [{ "argv": ["npm", "install", "-g", "opencode-ai"], "label": "Install OpenCode", "timeoutSec": 360 }],
+    "mac": [{ "argv": ["npm", "install", "-g", "opencode-ai"], "label": "Install OpenCode", "timeoutSec": 360 }],
+    "macTested": false,
+    "silent": true
+   },
+   "requires": ["node"],
+   "plan": "free-tier",
+   "upgradeUrl": "https://openrouter.ai/settings/credits",
+   "signIn": { "method": "oauth-browser", "inApp": "exists", "how": "Opens OpenRouter in your browser; your key stays in this computer's credential store." },
+   "probe": { "kind": "cli-version", "argv": ["opencode", "--version"] },
+   "detect": { "cli": "opencode" }
+  },
   {
    "id": "claude-code",
    "name": "Claude Code",
@@ -628,6 +722,71 @@
    ],
    "ownerBuilt": false,
    "requires": [],
+   "recommendedWith": []
+  },
+  {
+   "id": "archify",
+   "name": "archify",
+   "kind": "skill",
+   "tier": "core",
+   "default": "on",
+   "summary": "Draws a project's system, flows and states as interactive diagrams.",
+   "inclusion": "pre-installed for the System diagram (owner, 2026-10-09)",
+   "source": {
+    "type": "skills-cli",
+    "ref": "tt-a1i/archify"
+   },
+   "install": {
+    "win": [
+     {
+      "argv": [
+       "npx",
+       "-y",
+       "skills",
+       "add",
+       "tt-a1i/archify",
+       "-g",
+       "-y",
+       "-s",
+       "archify"
+      ],
+      "label": "Add archify from tt-a1i/archify",
+      "timeoutSec": 360
+     }
+    ],
+    "macTested": false,
+    "silent": true
+   },
+   "licence": "MIT",
+   "plan": "free",
+   "signIn": {
+    "method": "none",
+    "inApp": "exists",
+    "how": "No sign-in needed"
+   },
+   "detect": {
+    "skills": [
+     "archify"
+    ]
+   },
+   "sessions": {
+    "claude": {
+     "d30": 0,
+     "d90": 0
+    },
+    "codex": {
+     "d30": 0,
+     "d90": 0
+    }
+   },
+   "hosts": [
+    "claude",
+    "codex"
+   ],
+   "ownerBuilt": false,
+   "requires": [
+    "node"
+   ],
    "recommendedWith": []
   },
   {
@@ -1655,6 +1814,51 @@
    ],
    "ownerBuilt": false,
    "requires": []
+  },
+  {
+   "id": "relume",
+   "name": "Relume",
+   "kind": "mcp",
+   "tier": "design",
+   "default": "offered",
+   "summary": "Search the Relume design library and add editable React components, shared primitives, Tailwind tokens and icons. This connection does not generate hosted sitemaps or publish sites.",
+   "ownerBuilt": false,
+   "hosts": [
+    "claude",
+    "codex"
+   ],
+   "inclusion": "Optional design component library, requested by the owner",
+   "source": {
+    "type": "hosted-mcp",
+    "ref": "https://relume-library-mcp.relume.io/mcp"
+   },
+   "setupUrl": "https://www.relume.ai/relume-library-mcp",
+   "install": {
+    "macTested": false,
+    "silent": false
+   },
+   "requires": [],
+   "recommendedWith": [],
+   "licence": "See Relume terms",
+   "plan": "not-checked",
+   "upgradeUrl": "https://www.relume.ai/pricing",
+   "signIn": {
+    "method": "oauth-browser",
+    "inApp": "exists",
+    "how": "Sign in with your Relume account in your browser and review the requested access. Your agent handles the connection; Relume's setup guide covers the React project requirements"
+   },
+   "probe": {
+    "kind": "mcp-handshake"
+   },
+   "detect": {
+    "mcp": [
+     "relume"
+    ]
+   },
+   "mcp": {
+    "name": "relume",
+    "url": "https://relume-library-mcp.relume.io/mcp"
+   }
   },
   {
    "id": "21st",
@@ -11579,22 +11783,8 @@
     "ref": "figma-mcp-server-guide.git"
    },
    "install": {
-    "win": [
-     {
-      "argv": [
-       "claude",
-       "plugin",
-       "install",
-       "figma@figma-mcp-server-guide.git",
-       "-s",
-       "user"
-      ],
-      "label": "Install figma@figma-mcp-server-guide.git",
-      "timeoutSec": 300
-     }
-    ],
     "macTested": false,
-    "silent": true
+    "silent": false
    },
    "probe": {
     "kind": "plugin-enabled"
@@ -11716,7 +11906,7 @@
   },
   {
    "id": "mintlify@mintlify-mintlify-claude-plugin.git",
-   "name": "mintlify",
+   "name": "Mintlify",
    "kind": "plugin",
    "tier": "extra",
    "default": "off",
@@ -11737,11 +11927,11 @@
     "how": "Sign-in not checked by Lx7"
    },
    "detect": {
-    "plugin": "mintlify@mintlify-mintlify-claude-plugin.git"
+    "plugin": "mintlify@mintlify-marketplace"
    },
    "source": {
     "type": "claude-plugin",
-    "ref": "mintlify-mintlify-claude-plugin.git"
+    "ref": "mintlify/mintlify-claude-plugin"
    },
    "install": {
     "win": [
@@ -11749,17 +11939,53 @@
       "argv": [
        "claude",
        "plugin",
+       "marketplace",
+       "add",
+       "mintlify/mintlify-claude-plugin"
+      ],
+      "label": "Add the Mintlify marketplace",
+      "timeoutSec": 120
+     },
+     {
+      "argv": [
+       "claude",
+       "plugin",
        "install",
-       "mintlify@mintlify-mintlify-claude-plugin.git",
+       "mintlify@mintlify-marketplace",
        "-s",
        "user"
       ],
-      "label": "Install mintlify@mintlify-mintlify-claude-plugin.git",
+      "label": "Install Mintlify",
       "timeoutSec": 300
      }
     ],
     "macTested": false,
-    "silent": true
+    "silent": true,
+    "mac": [
+     {
+      "argv": [
+       "claude",
+       "plugin",
+       "marketplace",
+       "add",
+       "mintlify/mintlify-claude-plugin"
+      ],
+      "label": "Add the Mintlify marketplace",
+      "timeoutSec": 120
+     },
+     {
+      "argv": [
+       "claude",
+       "plugin",
+       "install",
+       "mintlify@mintlify-marketplace",
+       "-s",
+       "user"
+      ],
+      "label": "Install Mintlify",
+      "timeoutSec": 300
+     }
+    ]
    },
    "probe": {
     "kind": "plugin-enabled"
@@ -11768,7 +11994,7 @@
   },
   {
    "id": "notion@makenotion-claude-code-notion-plugin.git",
-   "name": "notion",
+   "name": "Notion",
    "kind": "plugin",
    "tier": "extra",
    "default": "off",
@@ -11790,11 +12016,11 @@
     "reasonIfNo": "Lx7 can't run that sign-in here yet"
    },
    "detect": {
-    "plugin": "notion@makenotion-claude-code-notion-plugin.git"
+    "plugin": "notion-workspace-plugin@notion-plugin-marketplace"
    },
    "source": {
     "type": "claude-plugin",
-    "ref": "makenotion-claude-code-notion-plugin.git"
+    "ref": "makenotion/claude-code-notion-plugin"
    },
    "install": {
     "win": [
@@ -11802,17 +12028,53 @@
       "argv": [
        "claude",
        "plugin",
+       "marketplace",
+       "add",
+       "makenotion/claude-code-notion-plugin"
+      ],
+      "label": "Add the Notion marketplace",
+      "timeoutSec": 120
+     },
+     {
+      "argv": [
+       "claude",
+       "plugin",
        "install",
-       "notion@makenotion-claude-code-notion-plugin.git",
+       "notion-workspace-plugin@notion-plugin-marketplace",
        "-s",
        "user"
       ],
-      "label": "Install notion@makenotion-claude-code-notion-plugin.git",
+      "label": "Install Notion",
       "timeoutSec": 300
      }
     ],
     "macTested": false,
-    "silent": true
+    "silent": true,
+    "mac": [
+     {
+      "argv": [
+       "claude",
+       "plugin",
+       "marketplace",
+       "add",
+       "makenotion/claude-code-notion-plugin"
+      ],
+      "label": "Add the Notion marketplace",
+      "timeoutSec": 120
+     },
+     {
+      "argv": [
+       "claude",
+       "plugin",
+       "install",
+       "notion-workspace-plugin@notion-plugin-marketplace",
+       "-s",
+       "user"
+      ],
+      "label": "Install Notion",
+      "timeoutSec": 300
+     }
+    ]
    },
    "probe": {
     "kind": "plugin-enabled"
@@ -12071,22 +12333,8 @@
     "ref": "skillopt-sleep"
    },
    "install": {
-    "win": [
-     {
-      "argv": [
-       "claude",
-       "plugin",
-       "install",
-       "skillopt-sleep@skillopt-sleep",
-       "-s",
-       "user"
-      ],
-      "label": "Install skillopt-sleep@skillopt-sleep",
-      "timeoutSec": 300
-     }
-    ],
     "macTested": false,
-    "silent": true
+    "silent": false
    },
    "probe": {
     "kind": "plugin-enabled"
@@ -12309,7 +12557,7 @@
   },
   {
    "id": "wix@wix-skills.git",
-   "name": "wix",
+   "name": "Wix",
    "kind": "plugin",
    "tier": "extra",
    "default": "off",
@@ -12322,7 +12570,7 @@
    "inclusion": "On the owner's machine",
    "requires": [],
    "recommendedWith": [],
-   "licence": "See source",
+   "licence": "MIT",
    "plan": "not-checked",
    "signIn": {
     "method": "none",
@@ -12330,11 +12578,11 @@
     "how": "Sign-in not checked by Lx7"
    },
    "detect": {
-    "plugin": "wix@wix-skills.git"
+    "plugin": "wix@wix"
    },
    "source": {
     "type": "claude-plugin",
-    "ref": "wix-skills.git"
+    "ref": "wix/skills"
    },
    "install": {
     "win": [
@@ -12342,12 +12590,48 @@
       "argv": [
        "claude",
        "plugin",
+       "marketplace",
+       "add",
+       "wix/skills"
+      ],
+      "label": "Add the Wix marketplace",
+      "timeoutSec": 120
+     },
+     {
+      "argv": [
+       "claude",
+       "plugin",
        "install",
-       "wix@wix-skills.git",
+       "wix@wix",
        "-s",
        "user"
       ],
-      "label": "Install wix@wix-skills.git",
+      "label": "Install Wix",
+      "timeoutSec": 300
+     }
+    ],
+    "mac": [
+     {
+      "argv": [
+       "claude",
+       "plugin",
+       "marketplace",
+       "add",
+       "wix/skills"
+      ],
+      "label": "Add the Wix marketplace",
+      "timeoutSec": 120
+     },
+     {
+      "argv": [
+       "claude",
+       "plugin",
+       "install",
+       "wix@wix",
+       "-s",
+       "user"
+      ],
+      "label": "Install Wix",
       "timeoutSec": 300
      }
     ],
@@ -12357,7 +12641,7 @@
    "probe": {
     "kind": "plugin-enabled"
    },
-   "version": "1.0.0"
+   "version": "1.26.0"
   },
   {
    "id": "mcp-coolors",
@@ -12493,6 +12777,112 @@
    "mcp": {
     "name": "hyperframes",
     "url": "https://mcp.heygen.com/mcp/hyperframes/"
+   }
+  },
+  {
+   "id": "chrome-extensions",
+   "name": "chrome-extensions",
+   "kind": "skill",
+   "tier": "extra",
+   "default": "off",
+   "summary": "Build and publish Chrome Extensions using Manifest V3 best practices.",
+   "ownerBuilt": false,
+   "hosts": [
+    "claude",
+    "codex"
+   ],
+   "inclusion": "On the owner's machine",
+   "requires": [],
+   "recommendedWith": [],
+   "licence": "Apache-2.0",
+   "plan": "not-checked",
+   "signIn": {
+    "method": "none",
+    "inApp": "exists",
+    "how": "Sign-in not checked by Lx7"
+   },
+   "detect": {
+    "skills": [
+     "chrome-extensions"
+    ]
+   },
+   "source": {
+    "type": "skills-cli",
+    "ref": "GoogleChrome/modern-web-guidance"
+   },
+   "install": {
+    "win": [
+     {
+      "argv": [
+       "npx",
+       "-y",
+       "skills",
+       "add",
+       "GoogleChrome/modern-web-guidance",
+       "-g",
+       "-y",
+       "-s",
+       "chrome-extensions"
+      ],
+      "label": "Add chrome-extensions",
+      "timeoutSec": 360
+     }
+    ],
+    "macTested": false,
+    "silent": true
+   }
+  },
+  {
+   "id": "modern-web-guidance",
+   "name": "modern-web-guidance",
+   "kind": "skill",
+   "tier": "extra",
+   "default": "off",
+   "summary": "Search tool for modern web development best practices.",
+   "ownerBuilt": false,
+   "hosts": [
+    "claude",
+    "codex"
+   ],
+   "inclusion": "On the owner's machine",
+   "requires": [],
+   "recommendedWith": [],
+   "licence": "Apache-2.0",
+   "plan": "not-checked",
+   "signIn": {
+    "method": "none",
+    "inApp": "exists",
+    "how": "Sign-in not checked by Lx7"
+   },
+   "detect": {
+    "skills": [
+     "modern-web-guidance"
+    ]
+   },
+   "source": {
+    "type": "skills-cli",
+    "ref": "GoogleChrome/modern-web-guidance"
+   },
+   "install": {
+    "win": [
+     {
+      "argv": [
+       "npx",
+       "-y",
+       "skills",
+       "add",
+       "GoogleChrome/modern-web-guidance",
+       "-g",
+       "-y",
+       "-s",
+       "modern-web-guidance"
+      ],
+      "label": "Add modern-web-guidance",
+      "timeoutSec": 360
+     }
+    ],
+    "macTested": false,
+    "silent": true
    }
   }
  ]
