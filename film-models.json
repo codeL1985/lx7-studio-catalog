@@ -1,5 +1,5 @@
 {
- "revision": "2026-11-13T08:19:49.654Z",
+ "revision": "2026-11-13T17:14:18.620Z",
  "steps": {
   "pics": {
    "model": "gpt_image_2_5",
@@ -17,9 +17,9 @@
    "job_type": "seedance_2_5"
   },
   "frames": {
-   "model": "kling_3.0_omni_frames",
-   "since": "2026-10-11",
-   "job_type": "kling_o3_flf"
+   "model": "wan_3.0_prime",
+   "since": "2026-11-13",
+   "trial": "wan_3.0_prime-frames-2026-11-14"
   },
   "voice": {
    "model": "elevenlabs_v4",
