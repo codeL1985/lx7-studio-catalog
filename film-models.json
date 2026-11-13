@@ -1,0 +1,33 @@
+{
+ "revision": "2026-11-13T08:19:49.654Z",
+ "steps": {
+  "pics": {
+   "model": "gpt_image_2_5",
+   "since": "2026-10-11",
+   "kept_over": [
+    "gpt_image_2_6"
+   ],
+   "kept_over_trials": [
+    "gpt_image_2_6-pics-2026-11-13"
+   ]
+  },
+  "talk": {
+   "model": "seedance_2.5",
+   "since": "2026-10-11",
+   "job_type": "seedance_2_5"
+  },
+  "frames": {
+   "model": "kling_3.0_omni_frames",
+   "since": "2026-10-11",
+   "job_type": "kling_o3_flf"
+  },
+  "voice": {
+   "model": "elevenlabs_v4",
+   "since": "2026-10-13"
+  },
+  "music": {
+   "model": "suno_V6",
+   "since": "2026-10-09"
+  }
+ }
+}
